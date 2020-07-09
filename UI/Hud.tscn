@@ -1,21 +1,23 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://UI/Button.gd" type="Script" id=1]
+[ext_resource path="res://UI/Hud.gd" type="Script" id=2]
 
-[node name="Hub" type="Control"]
+[node name="Hud" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -517.0
+margin_bottom = 1.0
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Button" type="Button" parent="."]
-margin_left = 21.3293
-margin_top = 17.3983
-margin_right = 155.329
-margin_bottom = 70.3983
-text = "Click Me"
+margin_left = 14.9724
+margin_top = 530.179
+margin_right = 148.973
+margin_bottom = 583.179
+text = "Center Camera"
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

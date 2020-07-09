@@ -12,5 +12,17 @@ script = ExtResource( 2 )
 visible = false
 
 [node name="Cone" parent="." index="1"]
+transform = Transform( 0.999792, 0, 0.0203955, 0, 1, 0, -0.0203955, 0, 0.999792, 0, 1, 0 )
 material_override = SubResource( 1 )
 skeleton = NodePath("")
+
+[node name="AnimationPlayer" parent="Cone" index="0"]
+autoplay = "ConeAction.002"
+method_call_mode = 1
+
+[node name="Cone001" parent="." index="2"]
+transform = Transform( -0.999792, -8.74046e-08, 0.0203955, 8.74228e-08, -1, -3.38618e-15, 0.0203955, 1.78303e-09, 0.999792, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Cone001" index="0"]
+autoplay = "Cone.001Action.002"
+method_call_mode = 1

@@ -1,11 +1,14 @@
 extends KinematicBody
 
 export var team: int = 0;
+export var hp_max: int = 100;
 class_name Unit
 var team_colors = {
 	0: preload("res://Actors/TeamOneMaterial.tres"),
 	1: preload("res://Actors/TeamTwoMaterial.tres"),
 }
+
+var hp: int = hp_max;
 
 var path = [];
 var path_ind = 0;
@@ -16,6 +19,7 @@ onready var model: UnitModel = $UnitModel
 func _ready():
 	if team in team_colors:
 		model.material_override(team_colors[team])
+	#model.animation_start();
 
 func move_to(target_pos):
 	path = nav.get_simple_path(global_transform.origin, target_pos);
@@ -36,3 +40,7 @@ func select():
 	
 func deselect():
 	$SelectionRing.hide();
+
+func adjust_hp(num: int) -> int:
+	hp += num;
+	return hp;
