@@ -13,15 +13,34 @@ _global_script_classes=[ {
 "class": "Unit",
 "language": "GDScript",
 "path": "res://Actors/Unit.gd"
+}, {
+"base": "Spatial",
+"class": "UnitModel",
+"language": "GDScript",
+"path": "res://Assets/UnitModel.gd"
 } ]
 _global_script_class_icons={
-"Unit": ""
+"Unit": "",
+"UnitModel": ""
 }
 
 [application]
 
 config/name="GodotShenanigans"
 config/icon="res://icon.png"
+
+[input]
+
+main_command={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+alt_command={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
 
 [rendering]
 

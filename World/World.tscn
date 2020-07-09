@@ -41,6 +41,8 @@ __meta__ = {
 }
 
 [node name="Hub" parent="ControlBase" instance=ExtResource( 4 )]
+margin_top = 518.018
+margin_bottom = 0.0179443
 
 [node name="Navigation" type="Navigation" parent="."]
 

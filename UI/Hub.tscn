@@ -5,15 +5,16 @@
 [node name="Hub" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = -517.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Button" type="Button" parent="."]
-margin_left = 158.0
-margin_top = 527.0
-margin_right = 292.0
-margin_bottom = 580.0
+margin_left = 21.3293
+margin_top = 17.3983
+margin_right = 155.329
+margin_bottom = 70.3983
 text = "Click Me"
 script = ExtResource( 1 )
 __meta__ = {
