@@ -6,6 +6,7 @@ export (int)  var hp_max = 100;
 export (float) var attack_range = 5;
 export (int) var attack_str = 20;
 export (float) var attack_delay_sec = 0.5;
+export (bool) var isFoodWorker = false;
 
 var team_colors = {
 	0: preload("res://Actors/Team_Zero_Material.tres"),
@@ -25,7 +26,7 @@ var attack_ready := true;
 const move_speed := 12;
 onready var nav: Navigation = get_parent()
 
-signal unit_death;
+signal unit_death(unit);
 
 func _ready():
 	#init timer
@@ -45,9 +46,15 @@ func _ready():
 	else:
 		self.set_collision_layer_bit(4, true);
 		$AttackRange.set_collision_mask_bit(3, true);
+		$AttackRange.set_collision_mask_bit(1, true);
+		target_build();
+
+func target_build():
+	pass;
 
 func move_to(target_pos):
-	path = nav.get_simple_path(global_transform.origin, target_pos);
+	var origin = global_transform.origin
+	path = nav.get_simple_path(origin, target_pos);
 	path_ind = 0;
 	
 func _physics_process(delta: float) -> void:
@@ -78,13 +85,14 @@ func adjust_hp(num: int) -> int:
 	return hp;
 
 func kill() -> void:
-	emit_signal("unit_death");
+	emit_signal("unit_death", self);
 	self.queue_free();
 
 func attack_target() -> void:
 	if target:
 		attack_ready = false;
 		cooldown_timer.start();
+		look_at(target.transform.origin, Vector3.UP);
 		if target.adjust_hp(-1 * attack_str) <= 0:
 			drop_target(target);
 
