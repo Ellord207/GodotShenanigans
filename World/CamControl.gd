@@ -2,10 +2,11 @@ extends Spatial
 
 const MOVE_MARGIN = 20;
 const CAMERA_SPEED = 30;
-const MAX_CAMERA_RIGHT_DISTANCE_X = 40;
-const MAX_CAMERA_LEFT_DISTANCE_X = -40;
-const MAX_CAMERA_TOP_DISTANCE_Z = 40;
-const MAX_CAMERA_BOTTOM_DISTANCE_Z = -40;
+export var max_cam_dist = 40; # Arbitrary 40 picked
+var MAX_CAMERA_RIGHT_DISTANCE_X = max_cam_dist;
+var MAX_CAMERA_LEFT_DISTANCE_X = -1 * max_cam_dist;
+var MAX_CAMERA_TOP_DISTANCE_Z = max_cam_dist;
+var MAX_CAMERA_BOTTOM_DISTANCE_Z = -1 * max_cam_dist;
 
 const ray_length = 1000;
 onready var cam = $Camera;
