@@ -59,6 +59,10 @@ data = PoolVector3Array( 0, 0.75, 2.5, 0.245, 0.75, 2.488, 0, 0.45, 2.5, 0.245, 
 
 [node name="CamControl" parent="." instance=ExtResource( 1 )]
 
+[node name="Control" parent="CamControl" instance=ExtResource( 2 )]
+margin_top = 1.88776
+margin_bottom = 1.88776
+
 [node name="Navigation" type="Navigation" parent="."]
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Navigation"]
@@ -179,5 +183,5 @@ team = 1
 [node name="Unit8" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.17193, 5.72205e-06, 22.6438 )
 team = 1
-
-[node name="Control" parent="." instance=ExtResource( 2 )]
+[connection signal="deselected" from="CamControl" to="CamControl/Control" method="_on_CamControl_deselected"]
+[connection signal="unitSelected" from="CamControl" to="CamControl/Control" method="_on_CamControl_unitSelected"]

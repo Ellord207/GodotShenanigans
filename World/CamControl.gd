@@ -9,6 +9,11 @@ var MAX_CAMERA_LEFT_DISTANCE_X = -1 * max_cam_dist;
 var MAX_CAMERA_TOP_DISTANCE_Z = max_cam_dist;
 var MAX_CAMERA_BOTTOM_DISTANCE_Z = -1 * max_cam_dist;
 
+
+#var playerHUD = load("res://UI/PlayerHUD.gd").new()
+signal unitSelected(objects)
+signal deselected()
+
 const ray_length = 1000;
 onready var cam = $Camera;
 onready var cameraNode = get_node("Camera");
@@ -111,10 +116,15 @@ func select_units(m_pos) -> void:
 			unit.connect("unit_death", self, "_on_unit_death");
 			unit.select()
 		selected_units = new_selected_units
+		
+		#adding in events/signals for HUD to subscribe to
+		emit_signal("unitSelected", selected_units)
 	else:
 		for unit in selected_units:
 			unit.deselect()
 			selected_units = [];
+			
+		emit_signal("deselected")
 
 func get_unit_under_mouse(m_pos):
 	var result = self.raycast_from_mouse(m_pos, 3) # collision mask 0...011
