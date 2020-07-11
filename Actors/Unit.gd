@@ -1,7 +1,7 @@
 extends KinematicBody
 
 class_name Unit
-export (int, "Zero", "One") var team = "Zero";
+export (int) var team = 0;
 export (int)  var hp_max = 100;
 export (float) var attack_range = 5;
 export (int) var attack_str = 20;
@@ -80,9 +80,11 @@ func _physics_process(delta: float) -> void:
 		else:
 			move_vec = move_vec.normalized()
 			if target == null:
-				look_at(transform.origin + move_vec, Vector3.UP);
+				if transform.origin + move_vec != Vector3.UP:
+					look_at(transform.origin + move_vec, Vector3.UP);
 			else:
-				look_at(target.transform.origin, Vector3.UP);
+				if transform.origin + move_vec != Vector3.UP:
+					look_at(target.transform.origin, Vector3.UP);
 			move_and_slide(move_vec * move_speed, Vector3.UP);
 
 func select() -> void:
