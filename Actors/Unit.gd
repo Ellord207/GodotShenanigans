@@ -26,6 +26,7 @@ var cooldown_timer: Timer = null;
 var attack_ready := true;
 
 const move_speed := 12;
+const complete_dist := 0.15;
 onready var nav: Navigation = get_parent()
 
 signal unit_death(unit);
@@ -49,13 +50,23 @@ func _ready():
 		self.set_collision_layer_bit(4, true);
 		$AttackRange.set_collision_mask_bit(3, true);
 		$AttackRange.set_collision_mask_bit(1, true);
-		target_build();
+		get_target();
 
-func target_build():
-	pass;
+func get_target():
+	var buildings = get_tree().get_nodes_in_group("buildings");
+	if buildings.size() <= 0:
+		return;
+	var building = buildings[0];
+	var dist: int = 10000; # something larget to easily
+	for b in buildings:
+		var temp = self.transform.origin.distance_to(b.transform.origin);
+		if temp < dist:
+			dist = temp;
+			building = b;
+	move_to(building.transform.origin);
 
 func move_to(target_pos):
-	var origin = global_transform.origin
+	var origin = global_transform.origin;
 	path = nav.get_simple_path(origin, target_pos);
 	path_ind = 0;
 	
@@ -64,7 +75,7 @@ func _physics_process(delta: float) -> void:
 		attack_target();
 	if path_ind < path.size():
 		var move_vec: Vector3 = (path[path_ind] - global_transform.origin)
-		if move_vec.length() < 0.1:
+		if move_vec.length() < complete_dist:
 			path_ind += 1;
 		else:
 			move_vec = move_vec.normalized()
@@ -72,7 +83,7 @@ func _physics_process(delta: float) -> void:
 				look_at(transform.origin + move_vec, Vector3.UP);
 			else:
 				look_at(target.transform.origin, Vector3.UP);
-			move_and_slide(move_vec * move_speed, Vector3.UP); 
+			move_and_slide(move_vec * move_speed, Vector3.UP);
 
 func select() -> void:
 	$SelectionRing.show();
@@ -124,7 +135,9 @@ func _on_timeout_complete() -> void:
 	self.attack_ready = true;
 
 func _on_AttackRange_body_entered(body: Node) -> void:
-	if  body.team == self.team:
+	if not "team" in body or body.team == self.team:
+		if not team == 0:
+			pass; # target build
 		return;
 	targets_in_range.append(body);
 	if target == null:
@@ -132,6 +145,6 @@ func _on_AttackRange_body_entered(body: Node) -> void:
 		look_at(target.transform.origin, Vector3.UP);
 
 func _on_AttackRange_body_exited(body: Node) -> void:
-	if  body.team == self.team:
+	if not "team" in body or body.team == self.team:
 		return;
 	drop_target(body);

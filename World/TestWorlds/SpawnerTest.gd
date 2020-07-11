@@ -10,8 +10,4 @@ func _on_Button_pressed() -> void:
 	if points.size() == 0:
 		return;
 	var point = points[0];
-	var newUnitScene = load("res://Actors/Unit.tscn");
-	var newUnit = newUnitScene.instance();
-	newUnit.global_translate(point.global_transform.origin);
-	newUnit.team = 1;
-	self.add_child(newUnit);
+	point.queue_spawn(self);
