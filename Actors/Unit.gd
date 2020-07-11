@@ -1,26 +1,31 @@
 extends KinematicBody
 
+class_name Unit
 export (int, "Zero", "One") var team = "Zero";
 export (int)  var hp_max = 100;
 export (float) var attack_range = 5;
 export (int) var attack_str = 20;
 export (float) var attack_delay_sec = 0.5;
-class_name Unit
+
 var team_colors = {
 	0: preload("res://Actors/Team_Zero_Material.tres"),
 	1: preload("res://Actors/Team_One_Material.tres"),
 }
-
 var hp: int = hp_max;
 
-var targets_in_range: Array = [];
 var path = [];
 var path_ind := 0;
+
+var targets_in_range: Array = [];
 var target: Unit = null;
+
 var cooldown_timer: Timer = null;
-var attack_ready = true;
+var attack_ready := true;
+
 const move_speed := 12;
 onready var nav: Navigation = get_parent()
+
+signal unit_death;
 
 func _ready():
 	#init timer
@@ -73,6 +78,7 @@ func adjust_hp(num: int) -> int:
 	return hp;
 
 func kill() -> void:
+	emit_signal("unit_death");
 	self.queue_free();
 
 func attack_target() -> void:
