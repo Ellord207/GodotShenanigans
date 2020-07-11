@@ -3,6 +3,7 @@ extends Spatial
 const MOVE_MARGIN = 20;
 const CAMERA_SPEED = 30;
 export var max_cam_dist = 40; # Arbitrary 40 picked
+export var zoom_fov_increment = 5;
 var MAX_CAMERA_RIGHT_DISTANCE_X = max_cam_dist;
 var MAX_CAMERA_LEFT_DISTANCE_X = -1 * max_cam_dist;
 var MAX_CAMERA_TOP_DISTANCE_Z = max_cam_dist;
@@ -10,6 +11,8 @@ var MAX_CAMERA_BOTTOM_DISTANCE_Z = -1 * max_cam_dist;
 
 const ray_length = 1000;
 onready var cam = $Camera;
+onready var cameraNode = get_node("Camera");
+
 
 var team = 0;
 onready var selection_box = $SelectionBox
@@ -17,6 +20,17 @@ var selected_units: Array = [];
 var start_sel_pos = Vector2();
 var currentCameraDistanceX = 0;
 var currentCameraDistanceZ = 0;
+
+func _input(ev):
+	if ev is InputEventMouseButton:
+		if ev.button_index == BUTTON_WHEEL_UP:
+			print(cameraNode.fov);
+			if (cameraNode.fov > 40):
+				cameraNode.fov -= zoom_fov_increment;
+		if ev.button_index == BUTTON_WHEEL_DOWN:
+			print(cameraNode.fov);
+			if (cameraNode.fov < 80):
+				cameraNode.fov += zoom_fov_increment;
 
 func _process(delta: float) -> void:
 	var m_pos: Vector2 = get_viewport().get_mouse_position();
@@ -32,7 +46,7 @@ func _process(delta: float) -> void:
 	else:
 		selection_box.is_visible = false;
 	if Input.is_action_just_released("alt_command"):
-		select_units(m_pos)
+		select_units(m_pos);
 
 func calc_move(m_pos, delta) -> void:
 	var v_size = get_viewport().size;
