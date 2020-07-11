@@ -100,8 +100,7 @@ func get_units_in_box(top_left: Vector2, bot_right: Vector2) -> Array:
 	var box_selected_units = [];
 	var units = get_tree().get_nodes_in_group("units");
 	for unit in units:
-		if unit.team == team:
-			if box.has_point(cam.unproject_position(unit.global_transform.origin)):
+		if unit.team == team && box.has_point(cam.unproject_position(unit.global_transform.origin)):
 				box_selected_units.append(unit)
 	return box_selected_units;
 
