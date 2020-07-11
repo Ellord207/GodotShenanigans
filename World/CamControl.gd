@@ -2,10 +2,12 @@ extends Spatial
 
 const MOVE_MARGIN = 20;
 const CAMERA_SPEED = 30;
-const MAX_CAMERA_RIGHT_DISTANCE_X = 40;
-const MAX_CAMERA_LEFT_DISTANCE_X = -40;
-const MAX_CAMERA_TOP_DISTANCE_Z = 40;
-const MAX_CAMERA_BOTTOM_DISTANCE_Z = -40;
+export var max_cam_dist = 40; # Arbitrary 40 picked
+export var zoom_fov_increment = 5;
+var MAX_CAMERA_RIGHT_DISTANCE_X = max_cam_dist;
+var MAX_CAMERA_LEFT_DISTANCE_X = -1 * max_cam_dist;
+var MAX_CAMERA_TOP_DISTANCE_Z = max_cam_dist;
+var MAX_CAMERA_BOTTOM_DISTANCE_Z = -1 * max_cam_dist;
 
 
 #var playerHUD = load("res://UI/PlayerHUD.gd").new()
@@ -14,6 +16,8 @@ signal deselected()
 
 const ray_length = 1000;
 onready var cam = $Camera;
+onready var cameraNode = get_node("Camera");
+onready var navMesh = get_node("../Navigation");
 
 var team = 0;
 onready var selection_box = $SelectionBox
@@ -22,43 +26,65 @@ var start_sel_pos = Vector2();
 var currentCameraDistanceX = 0;
 var currentCameraDistanceZ = 0;
 
-func _ready():
-	pass
-	#self.connect("unitSelected", playerHUD, "selectObject")
+func _input(ev):
+	if Input.is_action_just_pressed("CreateUnitKey"):
+		var m_pos: Vector2 = get_viewport().get_mouse_position();
+		var results = raycast_from_mouse(m_pos, 1);
+		var newUnitScene = load("res://Actors/Unit.tscn");
+		var newUnit = newUnitScene.instance();
+		newUnit.global_translate(results.position);
+		newUnit.team = 0;
+		navMesh.add_child(newUnit);
+		
+	if Input.is_action_just_pressed("CreateBuildingKey"):
+		var m_pos: Vector2 = get_viewport().get_mouse_position();
+		var results = raycast_from_mouse(m_pos, 1);
+		var newBuildingScene = load("res://UI/House.tscn");
+		var newBuilding = newBuildingScene.instance();
+		newBuilding.global_translate(results.position);
+		navMesh.add_child(newBuilding);
+	
+	if ev is InputEventMouseButton:
+		if ev.button_index == BUTTON_WHEEL_UP:
+			if (cameraNode.fov > 40):
+				cameraNode.fov -= zoom_fov_increment;
+		if ev.button_index == BUTTON_WHEEL_DOWN:
+			if (cameraNode.fov < 80):
+				cameraNode.fov += zoom_fov_increment;
 
 func _process(delta: float) -> void:
 	var m_pos: Vector2 = get_viewport().get_mouse_position();
 	calc_move(m_pos, delta);
-	if Input.is_action_just_pressed("main_command"):
-		move_selected_units(m_pos);
 	if Input.is_action_just_pressed("alt_command"):
+		move_selected_units(m_pos);
+	if Input.is_action_just_pressed("main_command"):
 		selection_box.start_sel_pos = m_pos;
 		start_sel_pos = m_pos
-	if Input.is_action_pressed("alt_command"):
+	if Input.is_action_pressed("main_command"):
 		selection_box.is_visible = true;
 		selection_box.m_pos = m_pos;
 	else:
 		selection_box.is_visible = false;
-	if Input.is_action_just_released("alt_command"):
-		select_units(m_pos)
+	if Input.is_action_just_released("main_command"):
+		select_units(m_pos);
 
 func calc_move(m_pos, delta) -> void:
 	var v_size = get_viewport().size;
 	var move_vec = Vector3();
 	if m_pos.x < MOVE_MARGIN or Input.is_key_pressed(KEY_LEFT):
-		if (currentCameraDistanceX > MAX_CAMERA_LEFT_DISTANCE_X):
+		if (currentCameraDistanceX > MAX_CAMERA_LEFT_DISTANCE_X and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceX -= 1;
 			move_vec.x -= 1;
 	if m_pos.y < MOVE_MARGIN or Input.is_key_pressed(KEY_UP):
-		if (currentCameraDistanceZ > MAX_CAMERA_BOTTOM_DISTANCE_Z):
+		if (currentCameraDistanceZ > MAX_CAMERA_BOTTOM_DISTANCE_Z and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceZ -= 1;
 			move_vec.z -= 1;
 	if m_pos.x > v_size.x - MOVE_MARGIN or Input.is_key_pressed(KEY_RIGHT):
-		if (currentCameraDistanceX < MAX_CAMERA_RIGHT_DISTANCE_X):
+		if (currentCameraDistanceX < MAX_CAMERA_RIGHT_DISTANCE_X and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceX += 1;
 			move_vec.x += 1;
 	if m_pos.y > v_size.y - MOVE_MARGIN or Input.is_key_pressed(KEY_DOWN):
-		if (currentCameraDistanceZ < MAX_CAMERA_TOP_DISTANCE_Z):
+		if (currentCameraDistanceZ < MAX_CAMERA_TOP_DISTANCE_Z and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceZ += 1;
 			move_vec.z += 1;
 	
