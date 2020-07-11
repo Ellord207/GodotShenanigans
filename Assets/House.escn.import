@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/SimpleHouse.escn-559d7f7f7686f3e705e16339d8f40a68.scn"
+path="res://.import/House.escn-66a752f925b540f2a97ee847da809d01.scn"
 
 [deps]
 
-source_file="res://Assets/SimpleHouse.escn"
-dest_files=[ "res://.import/SimpleHouse.escn-559d7f7f7686f3e705e16339d8f40a68.scn" ]
+source_file="res://Assets/House.escn"
+dest_files=[ "res://.import/House.escn-66a752f925b540f2a97ee847da809d01.scn" ]
 
 [params]
 
