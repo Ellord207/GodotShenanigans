@@ -45,6 +45,11 @@ func _ready():
 	else:
 		self.set_collision_layer_bit(4, true);
 		$AttackRange.set_collision_mask_bit(3, true);
+		$AttackRange.set_collision_mask_bit(1, true);
+		target_build();
+
+func target_build():
+	pass;
 
 func move_to(target_pos):
 	var origin = global_transform.origin
@@ -86,6 +91,7 @@ func attack_target() -> void:
 	if target:
 		attack_ready = false;
 		cooldown_timer.start();
+		look_at(target.transform.origin, Vector3.UP);
 		if target.adjust_hp(-1 * attack_str) <= 0:
 			drop_target(target);
 
