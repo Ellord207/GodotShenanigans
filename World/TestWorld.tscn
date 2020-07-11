@@ -158,12 +158,15 @@ shape = SubResource( 16 )
 
 [node name="Unit" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8164, 1.90735e-06, 7.33494 )
+isFoodWorker = true
 
 [node name="Unit2" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8509, -1.90735e-06, -1.90748 )
+isFoodWorker = true
 
 [node name="Unit3" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08044, 5.72205e-06, -13.4077 )
+isFoodWorker = true
 
 [node name="Unit4" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.37088, 5.72205e-06, -6.66258 )
