@@ -154,3 +154,27 @@ shape = SubResource( 16 )
 
 [node name="Unit" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8164, 1.90735e-06, 7.33494 )
+
+[node name="Unit2" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8509, -1.90735e-06, -1.90748 )
+
+[node name="Unit3" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08044, 5.72205e-06, -13.4077 )
+
+[node name="Unit4" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.37088, 5.72205e-06, -6.66258 )
+
+[node name="Unit5" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18.907, 5.72205e-06, -18.453 )
+
+[node name="Unit6" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.63469, 5.72205e-06, 19.2014 )
+team = 1
+
+[node name="Unit7" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8115, 5.72205e-06, 21.4682 )
+team = 1
+
+[node name="Unit8" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.17193, 5.72205e-06, 22.6438 )
+team = 1
