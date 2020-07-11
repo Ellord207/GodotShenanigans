@@ -2,6 +2,10 @@ extends Spatial
 
 const MOVE_MARGIN = 20;
 const CAMERA_SPEED = 30;
+const MAX_CAMERA_RIGHT_DISTANCE_X = 40;
+const MAX_CAMERA_LEFT_DISTANCE_X = -40;
+const MAX_CAMERA_TOP_DISTANCE_Z = 40;
+const MAX_CAMERA_BOTTOM_DISTANCE_Z = -40;
 
 const ray_length = 1000;
 onready var cam = $Camera;
@@ -10,6 +14,8 @@ var team = 0;
 onready var selection_box = $SelectionBox
 var selected_units: Array = [];
 var start_sel_pos = Vector2();
+var currentCameraDistanceX = 0;
+var currentCameraDistanceZ = 0;
 
 func _process(delta: float) -> void:
 	var m_pos: Vector2 = get_viewport().get_mouse_position();
@@ -31,13 +37,22 @@ func calc_move(m_pos, delta) -> void:
 	var v_size = get_viewport().size;
 	var move_vec = Vector3();
 	if m_pos.x < MOVE_MARGIN or Input.is_key_pressed(KEY_LEFT):
-		move_vec.x -= 1;
+		if (currentCameraDistanceX > MAX_CAMERA_LEFT_DISTANCE_X):
+			currentCameraDistanceX -= 1;
+			move_vec.x -= 1;
 	if m_pos.y < MOVE_MARGIN or Input.is_key_pressed(KEY_UP):
-		move_vec.z -= 1;
+		if (currentCameraDistanceZ > MAX_CAMERA_BOTTOM_DISTANCE_Z):
+			currentCameraDistanceZ -= 1;
+			move_vec.z -= 1;
 	if m_pos.x > v_size.x - MOVE_MARGIN or Input.is_key_pressed(KEY_RIGHT):
-		move_vec.x += 1;
+		if (currentCameraDistanceX < MAX_CAMERA_RIGHT_DISTANCE_X):
+			currentCameraDistanceX += 1;
+			move_vec.x += 1;
 	if m_pos.y > v_size.y - MOVE_MARGIN or Input.is_key_pressed(KEY_DOWN):
-		move_vec.z += 1;
+		if (currentCameraDistanceZ < MAX_CAMERA_TOP_DISTANCE_Z):
+			currentCameraDistanceZ += 1;
+			move_vec.z += 1;
+	
 	move_vec = move_vec.rotated(Vector3(0, 1, 0), rotation_degrees.y);
 	global_translate(move_vec * delta * CAMERA_SPEED);
 
