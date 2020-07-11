@@ -52,19 +52,19 @@ func calc_move(m_pos, delta) -> void:
 	var v_size = get_viewport().size;
 	var move_vec = Vector3();
 	if m_pos.x < MOVE_MARGIN or Input.is_key_pressed(KEY_LEFT):
-		if (currentCameraDistanceX > MAX_CAMERA_LEFT_DISTANCE_X):
+		if (currentCameraDistanceX > MAX_CAMERA_LEFT_DISTANCE_X and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceX -= 1;
 			move_vec.x -= 1;
 	if m_pos.y < MOVE_MARGIN or Input.is_key_pressed(KEY_UP):
-		if (currentCameraDistanceZ > MAX_CAMERA_BOTTOM_DISTANCE_Z):
+		if (currentCameraDistanceZ > MAX_CAMERA_BOTTOM_DISTANCE_Z and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceZ -= 1;
 			move_vec.z -= 1;
 	if m_pos.x > v_size.x - MOVE_MARGIN or Input.is_key_pressed(KEY_RIGHT):
-		if (currentCameraDistanceX < MAX_CAMERA_RIGHT_DISTANCE_X):
+		if (currentCameraDistanceX < MAX_CAMERA_RIGHT_DISTANCE_X and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceX += 1;
 			move_vec.x += 1;
 	if m_pos.y > v_size.y - MOVE_MARGIN or Input.is_key_pressed(KEY_DOWN):
-		if (currentCameraDistanceZ < MAX_CAMERA_TOP_DISTANCE_Z):
+		if (currentCameraDistanceZ < MAX_CAMERA_TOP_DISTANCE_Z and get_viewport().get_mouse_position() != null):
 			currentCameraDistanceZ += 1;
 			move_vec.z += 1;
 	
