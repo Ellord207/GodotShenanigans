@@ -7,6 +7,11 @@ const MAX_CAMERA_LEFT_DISTANCE_X = -40;
 const MAX_CAMERA_TOP_DISTANCE_Z = 40;
 const MAX_CAMERA_BOTTOM_DISTANCE_Z = -40;
 
+
+#var playerHUD = load("res://UI/PlayerHUD.gd").new()
+signal unitSelected(objects)
+signal deselected()
+
 const ray_length = 1000;
 onready var cam = $Camera;
 
@@ -16,6 +21,10 @@ var selected_units: Array = [];
 var start_sel_pos = Vector2();
 var currentCameraDistanceX = 0;
 var currentCameraDistanceZ = 0;
+
+func _ready():
+	pass
+	#self.connect("unitSelected", playerHUD, "selectObject")
 
 func _process(delta: float) -> void:
 	var m_pos: Vector2 = get_viewport().get_mouse_position();
@@ -76,10 +85,15 @@ func select_units(m_pos) -> void:
 		for unit in new_selected_units:
 			unit.select()
 		selected_units = new_selected_units
+		
+		#adding in events/signals for HUD to subscribe to
+		emit_signal("unitSelected", selected_units)
 	else:
 		for unit in selected_units:
 			unit.deselect()
 			selected_units = [];
+			
+		emit_signal("deselected")
 
 func get_unit_under_mouse(m_pos):
 	var result = self.raycast_from_mouse(m_pos, 3) # collision mask 0...011

@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "PlayerHUD",
+"language": "GDScript",
+"path": "res://UI/PlayerHUD.gd"
+}, {
 "base": "KinematicBody",
 "class": "Unit",
 "language": "GDScript",
 "path": "res://Actors/Unit.gd"
 } ]
 _global_script_class_icons={
+"PlayerHUD": "",
 "Unit": ""
 }
 
@@ -36,11 +42,6 @@ alt_command={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
-
-[layer_names]
-
-3d_physics/layer_1="walls"
-3d_physics/layer_2="units"
 
 [rendering]
 
