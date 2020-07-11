@@ -3,6 +3,7 @@ extends KinematicBody
 export(int, "Zero", "One") var team = "Zero";
 export var hp_max: int = 100;
 export var attack_range: float = 5;
+export var attack_str: int = 20;
 class_name Unit
 var team_colors = {
 	0: preload("res://Actors/Team_Zero_Material.tres"),
@@ -46,18 +47,31 @@ func _physics_process(delta: float) -> void:
 			else:
 				look_at(target.transform.origin, Vector3.UP);
 			move_and_slide(move_vec * move_speed, Vector3.UP); 
-	#if target != null:
-	#	look_at(target.transform.origin, Vector3.UP);
 
-func select():
+func select() -> void:
 	$SelectionRing.show();
 	
-func deselect():
+func deselect() -> void:
 	$SelectionRing.hide();
 
 func adjust_hp(num: int) -> int:
 	hp += num;
+	if hp <= 0:
+		self.hide();
 	return hp;
+
+func attack_target() -> void:
+	if target:
+		if target.adjust_hp(-1 * attack_str) <= 0:
+			drop_target(target);
+
+func drop_target(body: Unit) -> void:
+	targets_in_range.erase(body);
+	if target && body.get_instance_id() == target.get_instance_id():
+		if targets_in_range.size() > 0:
+			target = get_next_target();
+		else:
+			target = null;
 
 func is_selected() -> bool:
 	return $SelectionRing.visible;
@@ -81,13 +95,7 @@ func _on_AttackRange_body_entered(body: Node) -> void:
 		target = body;
 		look_at(target.transform.origin, Vector3.UP);
 
-
 func _on_AttackRange_body_exited(body: Node) -> void:
 	if  body.team == self.team:
 		return;
-	targets_in_range.erase(body);
-	if target && body.get_instance_id() == target.get_instance_id():
-		if targets_in_range.size() > 0:
-			target = get_next_target();
-		else:
-			target = null;
+	drop_target(body);
