@@ -7,6 +7,8 @@ export (float) var attack_range = 5;
 export (int) var attack_str = 20;
 export (float) var attack_delay_sec = 0.5;
 export (bool) var isFoodWorker = false;
+export (bool) var isMedicalWorker = false;
+export (bool) var isMoneyWorker = false;
 
 var team_colors = {
 	0: preload("res://Actors/Team_Zero_Material.tres"),
