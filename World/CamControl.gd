@@ -80,8 +80,9 @@ func get_units_in_box(top_left: Vector2, bot_right: Vector2) -> Array:
 	var box = Rect2(top_left, bot_right - top_left)
 	var box_selected_units = [];
 	for unit in get_tree().get_nodes_in_group("units"):
-		if unit.team == team and box.has_point(cam.unproject_position(unit.global_transform.origin)):
-			box_selected_units.append(unit)
+		if unit.team == team:
+			if box.has_point(cam.unproject_position(unit.global_transform.origin)):
+				box_selected_units.append(unit)
 	return box_selected_units;
 
 func raycast_from_mouse(m_pos, collision_mask):
