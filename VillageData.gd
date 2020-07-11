@@ -22,7 +22,6 @@ func _on_timer_timeout():
 	var foodConsumption = 0;
 	var childNodes = get_node("../TestWorld").get_children();
 	for node in childNodes:
-		print("Node name is %s" % node.name);
 		if node.name == "Navigation":
 			var navigationChildren = node.get_children();
 			for navNode in navigationChildren:
@@ -33,6 +32,7 @@ func _on_timer_timeout():
 						if navNode.isFoodWorker == true:
 							foodIncome += 1;
 
+	# TODO: Remove these print statements when we get a UI showing these food values
 	print("Food at start of hour: %s" % food);
 	food -= foodConsumption;
 	food += foodIncome;
