@@ -63,7 +63,15 @@ func is_selected() -> bool:
 	return $SelectionRing.visible;
 
 func get_next_target() -> Unit:
-	return targets_in_range[0];
+	var next: Unit = targets_in_range[0];
+	var dist: int = 10000; # something larget to easily
+	for unit in targets_in_range:
+		var temp = self.transform.origin.distance_to(unit.transform.origin);
+		if temp < dist:
+			dist = temp;
+			next = unit;
+	return next;
+	#return targets_in_range[0];
 
 func _on_AttackRange_body_entered(body: Node) -> void:
 	if  body.team == self.team:
