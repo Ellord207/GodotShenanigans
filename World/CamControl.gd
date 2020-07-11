@@ -45,7 +45,7 @@ func move_selected_units(m_pos: Vector2):
 	var results = raycast_from_mouse(m_pos, 1);
 	if results:
 		for unit in selected_units:
-			unit.move_to(results.posision);
+			unit.move_to(results.position);
 
 func select_units(m_pos) -> void:
 	var new_selected_units = []
@@ -79,7 +79,8 @@ func get_units_in_box(top_left: Vector2, bot_right: Vector2) -> Array:
 		bot_right.y = tmp;
 	var box = Rect2(top_left, bot_right - top_left)
 	var box_selected_units = [];
-	for unit in get_tree().get_nodes_in_group("units"):
+	var units = get_tree().get_nodes_in_group("units");
+	for unit in units:
 		if unit.team == team:
 			if box.has_point(cam.unproject_position(unit.global_transform.origin)):
 				box_selected_units.append(unit)

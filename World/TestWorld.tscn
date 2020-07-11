@@ -154,4 +154,3 @@ shape = SubResource( 16 )
 
 [node name="Unit" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.8164, 1.90735e-06, 7.33494 )
-team = 1
