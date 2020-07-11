@@ -13,6 +13,7 @@ var hp: int = hp_max;
 
 var path = [];
 var path_ind = 0;
+var target: Unit = null;
 const move_speed = 12;
 onready var nav = get_parent()
 
@@ -33,7 +34,8 @@ func _physics_process(delta: float) -> void:
 			path_ind += 1;
 		else:
 			move_vec = move_vec.normalized()
-			look_at(transform.origin + move_vec, Vector3.UP);
+			if target == null:
+				look_at(transform.origin + move_vec, Vector3.UP);
 			move_and_slide(move_vec * move_speed, Vector3.UP); 
 
 func select():
@@ -46,6 +48,18 @@ func adjust_hp(num: int) -> int:
 	hp += num;
 	return hp;
 
-func _on_AttackRange_tree_entered() -> void:
-	#print_debug("Target!")
-	pass;
+func is_selected() -> bool:
+	return $SelectionRing.visible;
+
+func _on_AttackRange_body_entered(body: Node) -> void:
+	if !body.is_class("Unit") || body.team == team:
+		pass;
+	target = body;
+	look_at(target.transform.origin, Vector3.UP);
+
+
+func _on_AttackRange_body_exited(body: Node) -> void:
+	if !body.is_class("Unit") || body.team == team:
+		pass;
+	if target && body.get_instance_id() == target.get_instance_id():
+		target = null;

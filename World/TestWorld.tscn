@@ -160,6 +160,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8509, -1.90735e-06, -1.907
 
 [node name="Unit3" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08044, 5.72205e-06, -13.4077 )
+attack_range = 5.0
 
 [node name="Unit4" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.37088, 5.72205e-06, -6.66258 )
