@@ -47,4 +47,5 @@ func adjust_hp(num: int) -> int:
 	return hp;
 
 func _on_AttackRange_tree_entered() -> void:
-	print_debug("Target!")
+	#print_debug("Target!")
+	pass;
