@@ -37,6 +37,7 @@ func _input(ev):
 		newUnit.global_translate(results.position);
 		newUnit.team = 0;
 		navMesh.add_child(newUnit);
+		VillageData.money -= 10;
 		
 	if Input.is_action_just_pressed("CreateBuildingKey"):
 		var m_pos: Vector2 = get_viewport().get_mouse_position();
@@ -47,6 +48,7 @@ func _input(ev):
 		var newBuilding = newBuildingScene.instance();
 		newBuilding.global_translate(results.position);
 		navMesh.add_child(newBuilding);
+		VillageData.money -= 20;
 	
 	if ev is InputEventMouseButton:
 		if ev.button_index == BUTTON_WHEEL_UP:

@@ -1,11 +1,10 @@
 extends Node
 
 export var food = 100;
-export var medicine = 50;
-
+export var medicine = 3;
+export var money = 50;
 
 var _timer = null;
-
 
 func _ready():
 	
@@ -20,6 +19,8 @@ func _ready():
 func _on_timer_timeout():
 	var foodIncome = 0;
 	var foodConsumption = 0;
+	var medicineIncome = 0;
+	var moneyIncome = 0;
 	var childNodes = get_node("../TestWorld").get_children();
 	for node in childNodes:
 		if node.name == "Navigation":
@@ -31,9 +32,19 @@ func _on_timer_timeout():
 						foodConsumption += 1;
 						if navNode.isFoodWorker == true:
 							foodIncome += 1;
+						if navNode.isMedicalWorker == true:
+							medicineIncome += 1;
+						if navNode.isMoneyWorker == true:
+							moneyIncome += 1;
 
 	# TODO: Remove these print statements when we get a UI showing these food values
 	print("Food at start of hour: %s" % food);
 	food -= foodConsumption;
 	food += foodIncome;
 	print("Food after the hour passes: %s" % food);
+	print("Medicine at start of hour: %s" % medicine);
+	medicine += medicineIncome;
+	print("Medicine after the hour passes: %s" % medicine);
+	print("Money at start of hour: %s" % money);
+	money += moneyIncome;
+	print("Money after the hour passes: %s" % money);
