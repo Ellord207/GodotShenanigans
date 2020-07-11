@@ -30,13 +30,13 @@ func _process(delta: float) -> void:
 func calc_move(m_pos, delta) -> void:
 	var v_size = get_viewport().size;
 	var move_vec = Vector3();
-	if m_pos.x < MOVE_MARGIN:
+	if m_pos.x < MOVE_MARGIN or Input.is_key_pressed(KEY_LEFT):
 		move_vec.x -= 1;
-	if m_pos.y < MOVE_MARGIN:
+	if m_pos.y < MOVE_MARGIN or Input.is_key_pressed(KEY_UP):
 		move_vec.z -= 1;
-	if m_pos.x > v_size.x - MOVE_MARGIN:
+	if m_pos.x > v_size.x - MOVE_MARGIN or Input.is_key_pressed(KEY_RIGHT):
 		move_vec.x += 1;
-	if m_pos.y > v_size.y - MOVE_MARGIN:
+	if m_pos.y > v_size.y - MOVE_MARGIN or Input.is_key_pressed(KEY_DOWN):
 		move_vec.z += 1;
 	move_vec = move_vec.rotated(Vector3(0, 1, 0), rotation_degrees.y);
 	global_translate(move_vec * delta * CAMERA_SPEED);
@@ -60,7 +60,11 @@ func select_units(m_pos) -> void:
 			unit.deselect()
 		for unit in new_selected_units:
 			unit.select()
-	selected_units = new_selected_units
+		selected_units = new_selected_units
+	else:
+		for unit in selected_units:
+			unit.deselect()
+			selected_units = [];
 
 func get_unit_under_mouse(m_pos):
 	var result = self.raycast_from_mouse(m_pos, 3) # collision mask 0...011
