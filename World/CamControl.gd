@@ -25,6 +25,8 @@ func _input(ev):
 	if Input.is_action_just_pressed("CreateUnitKey"):
 		var m_pos: Vector2 = get_viewport().get_mouse_position();
 		var results = raycast_from_mouse(m_pos, 1);
+		if not "position" in results:
+			return;
 		var newUnitScene = load("res://Actors/Unit.tscn");
 		var newUnit = newUnitScene.instance();
 		newUnit.global_translate(results.position);
@@ -34,6 +36,8 @@ func _input(ev):
 	if Input.is_action_just_pressed("CreateBuildingKey"):
 		var m_pos: Vector2 = get_viewport().get_mouse_position();
 		var results = raycast_from_mouse(m_pos, 1);
+		if not "position" in results:
+			return;
 		var newBuildingScene = load("res://UI/House.tscn");
 		var newBuilding = newBuildingScene.instance();
 		newBuilding.global_translate(results.position);
@@ -104,6 +108,7 @@ func select_units(m_pos) -> void:
 		for unit in selected_units:
 			unit.deselect()
 		for unit in new_selected_units:
+			unit.connect("unit_death", self, "_on_unit_death");
 			unit.select()
 		selected_units = new_selected_units
 	else:
@@ -139,3 +144,6 @@ func raycast_from_mouse(m_pos, collision_mask):
 	var ray_end = ray_start + cam.project_ray_normal(m_pos) * ray_length;
 	var space_state = get_world().direct_space_state
 	return space_state.intersect_ray(ray_start, ray_end, [], collision_mask);
+
+func _on_unit_death(unit: Unit) -> void:
+	selected_units.erase(unit);
