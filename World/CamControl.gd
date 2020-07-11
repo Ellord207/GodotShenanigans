@@ -24,11 +24,9 @@ var currentCameraDistanceZ = 0;
 func _input(ev):
 	if ev is InputEventMouseButton:
 		if ev.button_index == BUTTON_WHEEL_UP:
-			print(cameraNode.fov);
 			if (cameraNode.fov > 40):
 				cameraNode.fov -= zoom_fov_increment;
 		if ev.button_index == BUTTON_WHEEL_DOWN:
-			print(cameraNode.fov);
 			if (cameraNode.fov < 80):
 				cameraNode.fov += zoom_fov_increment;
 

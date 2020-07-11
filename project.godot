@@ -24,6 +24,10 @@ config/name="GMTK Game Jam 2020-Out Of Control"
 run/main_scene="res://World/TestWorld.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+VillageData="*res://VillageData.gd"
+
 [input]
 
 main_command={
@@ -41,8 +45,6 @@ alt_command={
 
 3d_physics/layer_1="walls"
 3d_physics/layer_2="units"
-3d_physics/layer_3="villages"
-3d_physics/layer_4="infected"
 
 [rendering]
 
