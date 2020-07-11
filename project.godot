@@ -55,10 +55,11 @@ CreateBuildingKey={
 
 [layer_names]
 
-3d_physics/layer_1="walls"
+3d_physics/layer_1="terrian"
 3d_physics/layer_2="units"
-3d_physics/layer_3="villages"
+3d_physics/layer_3="villagers"
 3d_physics/layer_4="infected"
+3d_physics/layer_5="buildings"
 
 [rendering]
 
