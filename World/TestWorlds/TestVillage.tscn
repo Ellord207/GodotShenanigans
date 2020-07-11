@@ -25,6 +25,8 @@ data = PoolVector3Array( -25, 0.1, 25, 25, 0.1, 25, -25, -0.1, 25, 25, 0.1, 25, 
 [node name="TestWorld" type="Spatial"]
 
 [node name="CamControl" parent="." instance=ExtResource( 3 )]
+max_cam_dist = null
+zoom_fov_increment = null
 
 [node name="Navigation" type="Navigation" parent="."]
 script = ExtResource( 5 )
