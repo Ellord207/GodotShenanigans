@@ -69,8 +69,11 @@ func deselect() -> void:
 func adjust_hp(num: int) -> int:
 	hp += num;
 	if hp <= 0:
-		self.hide();
+		kill();
 	return hp;
+
+func kill() -> void:
+	self.queue_free();
 
 func attack_target() -> void:
 	if target:
