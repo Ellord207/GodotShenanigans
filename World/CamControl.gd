@@ -35,17 +35,17 @@ func _input(ev):
 func _process(delta: float) -> void:
 	var m_pos: Vector2 = get_viewport().get_mouse_position();
 	calc_move(m_pos, delta);
-	if Input.is_action_just_pressed("main_command"):
-		move_selected_units(m_pos);
 	if Input.is_action_just_pressed("alt_command"):
+		move_selected_units(m_pos);
+	if Input.is_action_just_pressed("main_command"):
 		selection_box.start_sel_pos = m_pos;
 		start_sel_pos = m_pos
-	if Input.is_action_pressed("alt_command"):
+	if Input.is_action_pressed("main_command"):
 		selection_box.is_visible = true;
 		selection_box.m_pos = m_pos;
 	else:
 		selection_box.is_visible = false;
-	if Input.is_action_just_released("alt_command"):
+	if Input.is_action_just_released("main_command"):
 		select_units(m_pos);
 
 func calc_move(m_pos, delta) -> void:
