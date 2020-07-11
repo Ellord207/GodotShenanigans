@@ -27,7 +27,6 @@ func _input(ev):
 		var results = raycast_from_mouse(m_pos, 1);
 		var newUnitScene = load("res://Actors/Unit.tscn");
 		var newUnit = newUnitScene.instance();
-		#newUnit.global_transform.translated(results.position);
 		newUnit.global_translate(results.position);
 		newUnit.team = 0;
 		navMesh.add_child(newUnit);
