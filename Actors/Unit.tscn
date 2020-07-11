@@ -53,6 +53,11 @@ visible = false
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
 
-[node name="AttackRangeCollision" type="CollisionShape" parent="."]
+[node name="AttackRange" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="AttackRange"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 shape = SubResource( 7 )
+[connection signal="tree_entered" from="AttackRange/CollisionShape" to="." method="_on_AttackRange_tree_entered"]

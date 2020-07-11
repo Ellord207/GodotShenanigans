@@ -2,6 +2,7 @@ extends KinematicBody
 
 export var team: int = 0;
 export var hp_max: int = 100;
+export var attack_range: float = 5;
 class_name Unit
 var team_colors = {
 	0: preload("res://Actors/Team_One_Material.tres"),
@@ -18,6 +19,8 @@ onready var nav = get_parent()
 func _ready():
 	if team in team_colors:
 		$Body.material_override = team_colors[team];
+	var cylinder: CylinderShape = $AttackRange/CollisionShape.shape;
+	cylinder.radius = attack_range;
 
 func move_to(target_pos):
 	path = nav.get_simple_path(global_transform.origin, target_pos);
@@ -42,3 +45,6 @@ func deselect():
 func adjust_hp(num: int) -> int:
 	hp += num;
 	return hp;
+
+func _on_AttackRange_tree_entered() -> void:
+	print_debug("Target!")
