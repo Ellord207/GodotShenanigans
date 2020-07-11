@@ -1,9 +1,10 @@
 extends KinematicBody
 
-export(int, "Zero", "One") var team = "Zero";
-export var hp_max: int = 100;
-export var attack_range: float = 5;
-export var attack_str: int = 20;
+export (int, "Zero", "One") var team = "Zero";
+export (int)  var hp_max = 100;
+export (float) var attack_range = 5;
+export (int) var attack_str = 20;
+export (float) var attack_delay_sec = 0.5;
 class_name Unit
 var team_colors = {
 	0: preload("res://Actors/Team_Zero_Material.tres"),
@@ -16,10 +17,19 @@ var targets_in_range: Array = [];
 var path = [];
 var path_ind := 0;
 var target: Unit = null;
+var cooldown_timer: Timer = null;
+var attack_ready = true;
 const move_speed := 12;
 onready var nav: Navigation = get_parent()
 
 func _ready():
+	#init timer
+	cooldown_timer = Timer.new();
+	cooldown_timer.one_shot = true;
+	cooldown_timer.wait_time = attack_delay_sec;
+	cooldown_timer.connect("timeout", self, "_on_timeout_complete");
+	add_child(cooldown_timer);
+	
 	if team in team_colors:
 		$Body.material_override = team_colors[team];
 	var cylinder: CylinderShape = $AttackRange/CollisionShape.shape;
@@ -36,6 +46,8 @@ func move_to(target_pos):
 	path_ind = 0;
 	
 func _physics_process(delta: float) -> void:
+	if attack_ready and target:
+		attack_target();
 	if path_ind < path.size():
 		var move_vec: Vector3 = (path[path_ind] - global_transform.origin)
 		if move_vec.length() < 0.1:
@@ -62,6 +74,8 @@ func adjust_hp(num: int) -> int:
 
 func attack_target() -> void:
 	if target:
+		attack_ready = false;
+		cooldown_timer.start();
 		if target.adjust_hp(-1 * attack_str) <= 0:
 			drop_target(target);
 
@@ -86,6 +100,9 @@ func get_next_target() -> Unit:
 			next = unit;
 	return next;
 	#return targets_in_range[0];
+
+func _on_timeout_complete() -> void:
+	self.attack_ready = true;
 
 func _on_AttackRange_body_entered(body: Node) -> void:
 	if  body.team == self.team:
