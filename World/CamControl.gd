@@ -61,6 +61,10 @@ func select_units(m_pos) -> void:
 		for unit in new_selected_units:
 			unit.select()
 		selected_units = new_selected_units
+	else:
+		for unit in selected_units:
+			unit.deselect()
+			selected_units = [];
 
 func get_unit_under_mouse(m_pos):
 	var result = self.raycast_from_mouse(m_pos, 3) # collision mask 0...011
