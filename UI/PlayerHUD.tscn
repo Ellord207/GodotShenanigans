@@ -152,3 +152,5 @@ margin_top = 72.0
 margin_right = 188.0
 margin_bottom = 86.0
 text = "Money: "
+[connection signal="mouse_entered" from="." to="." method="_on_Control_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_Control_mouse_exited"]

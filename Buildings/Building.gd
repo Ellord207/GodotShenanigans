@@ -93,9 +93,15 @@ func enterBuilding(villager):
 	villager.translate(Vector3(0, 200, 0));
 	emit_signal("updateUI", self)
 	
-func leaveBuilding():
+func leaveBuilding(villager):
 	currentWorkers -= 1
-	var villager = workers.pop_back()
+	var workerIndex = 0
+	for worker in workers:
+		if worker == villager:
+			workers.remove(workerIndex)
+			break
+		workerIndex += 1
+	#var worker = workers.pop_back()
 	villager.translate(Vector3(0, -200, 0));
 	villager.set_physics_process(true)
 	villager.visible = true

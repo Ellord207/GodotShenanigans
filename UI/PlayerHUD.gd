@@ -17,6 +17,10 @@ var moneyLabel
 var unitTexture
 var buildingTexture
 
+var canDeselect = true
+
+var buttonWorkerMap = {}
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	statsGrid = $HBoxContainer/VBoxStats/MarginStatsInfo/ScrollContainerInfo/GridStatsInfo
@@ -119,8 +123,20 @@ func _on_CamControl_buildingSelected(objects):
 		for worker in object.workers:
 			var button = Button.new()
 			(button as Button).text = worker.name
+			button.connect("pressed", self, "buttonPressed", [button])
 			commandsGrid.add_child(button)
+			buttonWorkerMap[button] = [worker, object]
+
+func buttonPressed(button):
+	buttonWorkerMap[button][1].leaveBuilding(buttonWorkerMap[button][0])
+	buttonWorkerMap.erase(button)
+	commandsGrid.remove_child(button)
 
 func updateUI(object):
 	print("Update UI signal called");
-	pass
+
+func _on_Control_mouse_entered():
+	canDeselect = true
+
+func _on_Control_mouse_exited():
+	canDeselect = false

@@ -19,6 +19,7 @@ const ray_length = 1000;
 onready var cam = $Camera;
 onready var cameraNode = get_node("Camera");
 onready var navMesh = get_node("../Navigation");
+onready var controlNode = get_node("../CamControl/Control")
 
 var team = 0;
 onready var selection_box = $SelectionBox
@@ -114,15 +115,16 @@ func select_units(m_pos) -> void:
 	var new_selected_units = []
 	var new_selected_buildings = []
 	
-	for unit in selected_units:
-		unit.deselect()
-		selected_units = [];
-				
-	for building in selected_buildings:
-		building.deselect()
-		selected_buildings = []
-				
-	emit_signal("deselected")
+	if controlNode.canDeselect:
+		for unit in selected_units:
+			unit.deselect()
+			selected_units = [];
+					
+		for building in selected_buildings:
+			building.deselect()
+			selected_buildings = []
+					
+		emit_signal("deselected")
 	
 	if m_pos.distance_squared_to(start_sel_pos) < 16:
 		var u = get_unit_under_mouse(m_pos)
