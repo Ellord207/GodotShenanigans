@@ -16,10 +16,12 @@ var moneyLabel
 
 var unitTexture
 var buildingTexture
+var plotTexture
 
 var canDeselect = true
 
 var buttonWorkerMap = {}
+var plotButtonMap = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,6 +36,7 @@ func _ready():
 	moneyLabel = $VBoxContainer/MoneyLabel
 	unitTexture = load("res://Resources/UnitIcon.JPG")
 	buildingTexture = load("res://Resources/BuildingIcon.JPG")
+	plotTexture = load("res://Resources/PlotIcon.JPG")
 	
 	VillageManager.connect("villageTick", self, "updateVillageResources")
 	
@@ -108,29 +111,59 @@ func _on_CamControl_buildingSelected(objects):
 		commandsGrid.remove_child(child)
 		
 	# get all relevant properties
-	selectedIcon.texture = buildingTexture
-	selectedLabel.text = "Building"
 	for object in objects:
-		var label = Label.new()
-		(label as Label).text = "Building: " + object.buildingType
-		(statsGrid as GridContainer).add_child(label)
-		label = Label.new()
-		(label as Label).text = "Health: " + str(object.hp) + " / " + str(object.hpMax)
-		(statsGrid as GridContainer).add_child(label)
-		label = Label.new()
-		(label as Label).text = "Workers: " + str(object.currentWorkers) + " / " + str(object.maxWorkers)
-		(statsGrid as GridContainer).add_child(label)
-		for worker in object.workers:
+		if object.type == "building":
+			selectedIcon.texture = buildingTexture
+			selectedLabel.text = "Building"
+			var label = Label.new()
+			(label as Label).text = "Building: " + object.buildingType
+			(statsGrid as GridContainer).add_child(label)
+			label = Label.new()
+			(label as Label).text = "Health: " + str(object.hp) + " / " + str(object.hpMax)
+			(statsGrid as GridContainer).add_child(label)
+			label = Label.new()
+			(label as Label).text = "Workers: " + str(object.currentWorkers) + " / " + str(object.maxWorkers)
+			(statsGrid as GridContainer).add_child(label)
+			for worker in object.workers:
+				var button = Button.new()
+				(button as Button).text = worker.name
+				button.connect("pressed", self, "buttonPressed", [button])
+				commandsGrid.add_child(button)
+				buttonWorkerMap[button] = [worker, object]
+		if object.type == "EmptyPlot":
+			selectedIcon.texture = plotTexture
+			selectedLabel.text = "Empty Plot"
+			
+			# add plot command options
 			var button = Button.new()
-			(button as Button).text = worker.name
-			button.connect("pressed", self, "buttonPressed", [button])
+			button.text = "Buy Farm"
+			button.connect("pressed", self, "plotButtonPressed", [button])
 			commandsGrid.add_child(button)
-			buttonWorkerMap[button] = [worker, object]
+			plotButtonMap[button] = [object, "Farm"]
+			button = Button.new()
+			button.text = "Buy Bank"
+			button.connect("pressed", self, "plotButtonPressed", [button])
+			commandsGrid.add_child(button)
+			plotButtonMap[button] = [object, "Bank"]
+			button = Button.new()
+			button.text = "Buy Hospital"
+			button.connect("pressed", self, "plotButtonPressed", [button])
+			commandsGrid.add_child(button)
+			plotButtonMap[button] = [object, "Hospital"]
+			button = Button.new()
+			button.text = "Buy Jail"
+			button.connect("pressed", self, "plotButtonPressed", [button])
+			commandsGrid.add_child(button)
+			plotButtonMap[button] = [object, "Jail"]
+			
 
 func buttonPressed(button):
 	buttonWorkerMap[button][1].leaveBuilding(buttonWorkerMap[button][0])
 	buttonWorkerMap.erase(button)
 	commandsGrid.remove_child(button)
+	
+func plotButtonPressed(button):
+	plotButtonMap[button][0].purchaseBuilding(plotButtonMap[button][1])
 
 func updateUI(object):
 	print("Update UI signal called");

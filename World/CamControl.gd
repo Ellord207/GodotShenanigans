@@ -177,8 +177,8 @@ func get_unit_under_mouse(m_pos):
 		
 func get_building_under_mouse(m_pos):
 	var result = self.raycast_from_mouse(m_pos, 17) # collision mask 0...011
-	if "collider" in result and "type" in result.collider and str(result.collider.type) == "building":
-		 return result.collider;
+	if "collider" in result and "type" in result.collider and (str(result.collider.type) == "building" or str(result.collider.type) == "EmptyPlot"):
+		return result.collider;
 
 func get_units_in_box(top_left: Vector2, bot_right: Vector2) -> Array:
 		# ensure top and bottom are not swapped
@@ -211,9 +211,11 @@ func get_buildings_in_box(top_left: Vector2, bot_right: Vector2) -> Array:
 	var box = Rect2(top_left, bot_right - top_left)
 	var box_selected_buildings = [];
 	var buildings = get_tree().get_nodes_in_group("buildings");
+	buildings += get_tree().get_nodes_in_group("Plots")
 	for building in buildings:
 		if box.has_point(cam.unproject_position(building.global_transform.origin)):
 				box_selected_buildings.append(building)
+				
 	return box_selected_buildings;
 
 func raycast_from_mouse(m_pos, collision_mask):
