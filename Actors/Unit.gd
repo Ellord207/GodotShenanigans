@@ -28,6 +28,7 @@ var attack_ready := true;
 const move_speed := 12;
 const complete_dist := 0.15;
 onready var nav: Navigation = get_parent()
+onready var model = $BaldMan;
 
 signal unit_death(unit);
 
@@ -69,6 +70,7 @@ func move_to(target_pos):
 	var origin = global_transform.origin;
 	path = nav.get_simple_path(origin, target_pos);
 	path_ind = 0;
+	model.animation_run();
 	
 func _physics_process(delta: float) -> void:
 	if attack_ready and target:
@@ -77,6 +79,8 @@ func _physics_process(delta: float) -> void:
 		var move_vec: Vector3 = (path[path_ind] - global_transform.origin)
 		if move_vec.length() < complete_dist:
 			path_ind += 1;
+			if path_ind >= path.size():
+				model.animation_stop();
 		else:
 			move_vec = move_vec.normalized()
 			if target == null:
@@ -86,7 +90,7 @@ func _physics_process(delta: float) -> void:
 				if transform.origin + move_vec != Vector3.UP:
 					look_at(target.transform.origin, Vector3.UP);
 			move_and_slide(move_vec * move_speed, Vector3.UP);
-
+	
 func select() -> void:
 	$SelectionRing.show();
 	

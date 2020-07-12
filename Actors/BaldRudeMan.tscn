@@ -1,12 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/BaldRudeMan.escn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/BaldRudeMan.gd" type="Script" id=2]
+[ext_resource path="res://Actors/ManModel.gd" type="Script" id=3]
 
-[node name="Spatial" type="Spatial"]
+[node name="ManModel" type="Spatial"]
+script = ExtResource( 3 )
 
 [node name="BaldRudeMan" parent="." instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 0.761663, 0, 0.647974, 0, 1, 0, -0.647974, 0, 0.761663, 6.10191, 3.03515, 4.3036 )
+visible = false
