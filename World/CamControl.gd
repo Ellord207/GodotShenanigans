@@ -49,10 +49,12 @@ func _input(ev):
 		var results = raycast_from_mouse(m_pos, 1);
 		if not "position" in results:
 			return;
-		var newBuildingScene = load("res://UI/House.tscn");
-		var newBuilding = newBuildingScene.instance();
-		newBuilding.global_translate(results.position);
-		navMesh.add_child(newBuilding);
+		var newUnitScene = load("res://Actors/Unit.tscn");
+		var newUnit = newUnitScene.instance();
+		newUnit.global_translate(results.position);
+		newUnit.team = 2;
+		navMesh.add_child(newUnit);
+		newUnit.get_target();
 		VillageManager.money -= 20;
 	
 	if ev is InputEventMouseButton:
@@ -111,13 +113,23 @@ func move_selected_units(m_pos: Vector2):
 			else:
 				unit.move_to(result.position);
 
+func dehighlight_unit(unit: Unit):
+	unit.disconnect("unit_death", self, "_on_unit_death");
+	unit.disconnect("unit_team_changed", self, "_on_unit_turn");
+	unit.deselect()
+
+func highlight_unit(unit: Unit):
+	unit.connect("unit_death", self, "_on_unit_death");
+	unit.connect("unit_team_changed", self, "_on_unit_turn");
+	unit.select()
+
 func select_units(m_pos) -> void:
 	var new_selected_units = []
 	var new_selected_buildings = []
 	
 	if controlNode.canDeselect:
 		for unit in selected_units:
-			unit.deselect()
+			dehighlight_unit(unit)
 			selected_units = [];
 					
 		for building in selected_buildings:
@@ -141,10 +153,9 @@ func select_units(m_pos) -> void:
 			new_selected_buildings = get_buildings_in_box(start_sel_pos, m_pos)
 	if new_selected_units.size() != 0:
 		for unit in selected_units:
-			unit.deselect()
+			dehighlight_unit(unit)
 		for unit in new_selected_units:
-			unit.connect("unit_death", self, "_on_unit_death");
-			unit.select()
+			highlight_unit(unit);
 		selected_units = new_selected_units
 		
 		#adding in events/signals for HUD to subscribe to
@@ -213,5 +224,11 @@ func raycast_from_mouse(m_pos, collision_mask):
 	var space_state = get_world().direct_space_state
 	return space_state.intersect_ray(ray_start, ray_end, [], collision_mask);
 
+func _on_unit_turn(unit: Unit) -> void:
+	if unit.team != team:
+		dehighlight_unit(unit)
+		selected_units.erase(unit);
+
 func _on_unit_death(unit: Unit) -> void:
+	unit.disconnect("unit_death", self, "_on_unit_death");
 	selected_units.erase(unit);
