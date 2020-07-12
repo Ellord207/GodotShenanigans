@@ -10,9 +10,9 @@ export (bool) var isFoodWorker = false;
 export (bool) var isMedicalWorker = false;
 export (bool) var isMoneyWorker = false;
 
-var team_colors = {
-	0: preload("res://Actors/Team_Zero_Material.tres"),
-	1: preload("res://Actors/Team_One_Material.tres"),
+onready var team_models = {
+	0: $BaldMan,
+	1: $InfectedModel,
 }
 var hp: int = hp_max;
 var fireball_scene = preload("res://Actors/Fireball.tscn");
@@ -43,8 +43,9 @@ func _ready():
 	cooldown_timer.connect("timeout", self, "_on_timeout_complete");
 	add_child(cooldown_timer);
 	
-	if team in team_colors:
-		$Body.material_override = team_colors[team];
+	if team in team_models:
+		team_models[0].visible = false;
+		team_models[team].visible = true;
 	var cylinder: CylinderShape = $AttackRange/CollisionShape.shape;
 	cylinder.radius = attack_range;
 	if team == 0:
