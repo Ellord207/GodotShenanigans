@@ -29,6 +29,9 @@ var worker_building: Spatial = null;
 var cooldown_timer: Timer = null;
 var attack_ready := true;
 
+var virus_stage = 0;
+var virus_ticks = 1;
+
 const move_speed := 12;
 const complete_dist := 0.15;
 onready var nav: Navigation = get_parent()
@@ -111,10 +114,44 @@ func adjust_hp(num: int) -> int:
 func is_infected() -> bool:
 	return not team == 0;
 
-func set_infection(is_infected: bool) -> void:
-	if team == 0:
-		set_team(1);
-		emit_signal("unit_team_changed", self);
+func is_immue() -> bool:
+	return virus_stage == -1;
+
+func apply_medicine():
+	set_infection(-1)
+
+
+# stage -1: immune
+# stage 0: is unaffected
+# stage 1: team 0 ticking to team 1
+# stage 2: team 1 ticking to team 2
+# stage 3: team 2
+func set_infection(stage: int) -> void:
+	virus_stage = stage;
+	virus_ticks = 0;
+	VillageManager.disconnect("villageTick", self, "rng_virius");
+	if virus_stage == -1:
+		if team != 0:
+			set_team(0);
+			emit_signal("unit_team_changed", self);
+	elif virus_stage == 0:
+		if team != 0:
+			set_team(0);
+			emit_signal("unit_team_changed", self);
+	elif virus_stage == 1:
+		VillageManager.connect("villageTick", self, "rng_virius");
+		if team != 0:
+			set_team(0);
+			emit_signal("unit_team_changed", self);
+	elif virus_stage == 2:
+		VillageManager.connect("villageTick", self, "rng_virius");
+		if team != 1:
+			set_team(1);
+			emit_signal("unit_team_changed", self);
+	elif virus_stage == 3:
+		if team != 2:
+			set_team(2);
+			emit_signal("unit_team_changed", self);
 
 func set_team(team_arg: int):
 	team = team_arg;
@@ -156,7 +193,13 @@ func kill() -> void:
 	self.queue_free();
 
 func rng_virius() -> void:
-	if randi() % 100 > 90:
+	if virus_stage == -1: return;
+	var rate: int = 30;
+	virus_ticks+=virus_stage;
+	var rand = randi()
+	if rand % 100 > (virus_ticks + rate):
+		set_infection(false);
+	elif team == 1 and rand % 100 < 5:
 		set_infection(true);
 
 func attack_target() -> void:
