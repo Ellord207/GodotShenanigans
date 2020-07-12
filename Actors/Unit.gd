@@ -128,18 +128,21 @@ func set_team(team_arg: int):
 	# layer 4 infected
 	# layer 5 building
 	if team == 0: # villager
+		scale = Vector3(1, 1, 1);
 		self.set_collision_layer_bit(3, true); # attacked by infected
 		self.set_collision_layer_bit(4, false); # attacked by villagers
 		$AttackRange.set_collision_mask_bit(3, false); # attacks villagers
 		$AttackRange.set_collision_mask_bit(4, true); # attacks infected
 		$AttackRange.set_collision_mask_bit(5, false); # attacks building
 	elif team == 1: # infected villager
+		scale = Vector3(1, 1, 1);
 		self.set_collision_layer_bit(3, true); # attacked by infected
 		self.set_collision_layer_bit(4, false); # attacked by villagers
 		$AttackRange.set_collision_mask_bit(3, true); # attacks villagers
 		$AttackRange.set_collision_mask_bit(4, true); # attacks infected
 		$AttackRange.set_collision_mask_bit(5, true); # attacks building
 	elif team == 2: # infected
+		scale = Vector3(1.5, 1.5, 1.5);
 		self.set_collision_layer_bit(3, false); # attacked by infected
 		self.set_collision_layer_bit(4, true); # attacked by villagers
 		$AttackRange.set_collision_mask_bit(3, true); # attacks villagers

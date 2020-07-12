@@ -52,7 +52,7 @@ func _input(ev):
 		var newUnitScene = load("res://Actors/Unit.tscn");
 		var newUnit = newUnitScene.instance();
 		newUnit.global_translate(results.position);
-		newUnit.team = 1;
+		newUnit.team = 2;
 		navMesh.add_child(newUnit);
 		newUnit.get_target();
 		VillageManager.money -= 20;
