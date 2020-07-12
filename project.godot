@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="GMTK Game Jam 2020-Out Of Control"
-run/main_scene="res://World/TestWorld.tscn"
+run/main_scene="res://World/Level01.tscn"
 config/icon="res://icon.png"
 
 [autoload]
