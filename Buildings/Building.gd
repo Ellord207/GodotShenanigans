@@ -14,11 +14,15 @@ var requiredWork = 0
 var output = 0
 var workMultiplier = 0
 var workers = []
+var buildingPrice = 0
 
 var unitNode
 
 signal building_destroyed(building)
 signal updateUI(building)
+
+#func _init(type):
+	#buildingType = type
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -30,21 +34,25 @@ func _ready():
 		output = 1000
 		maxWorkers = 6
 		workMultiplier = 5
+		buildingPrice = 200
 	elif buildingType == "Bank":
 		requiredWork = 1000
 		output = 100
 		maxWorkers = 4
 		workMultiplier = 6
+		buildingPrice = 300
 	elif buildingType == "Jail":
 		requiredWork = 1000
 		output = 1
 		maxWorkers = 8
 		workMultiplier = 5
+		buildingPrice = 400
 	elif buildingType == "Hospital":
 		requiredWork = 500
 		output = 1
 		maxWorkers = 4
 		workMultiplier = 4
+		buildingPrice = 500
 	
 	pass # Replace with function body.
 
@@ -79,16 +87,12 @@ func select() -> void:
 		$StaticBody/SelectionRing.show()
 	else:
 		$SelectionRing.show()
-		
-	#addWorker(unitNode)
 	
 func deselect() -> void:
 	if $SelectionRing == null:
 		$StaticBody/SelectionRing.hide()
 	else:
 		$SelectionRing.hide()
-		
-	#removeWorker()
 
 func enterBuilding(villager):
 	currentWorkers += 1
