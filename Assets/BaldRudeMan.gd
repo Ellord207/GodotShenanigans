@@ -17,4 +17,3 @@ func _ready():
 	for cube in self.get_children():
 		for animation in cube.get_children():	
 			baldManLimbAnimations[animation.get_animation_list()[0]]=animation;
-			_start();
