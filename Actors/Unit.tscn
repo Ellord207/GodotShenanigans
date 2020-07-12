@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Actors/Unit.gd" type="Script" id=1]
+[ext_resource path="res://Actors/BaldRudeMan.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -37,15 +38,20 @@ shape = SubResource( 1 )
 
 [node name="Body" type="MeshInstance" parent="."]
 transform = Transform( 0.65, 0, 0, 0, 0.8, 0, 0, 0, 0.65, 0, 1.5, 0 )
+visible = false
 layers = 2147483649
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="TEN_TICKLE" type="MeshInstance" parent="."]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.3, 0, 2.25, -0.768 )
+visible = false
 material_override = SubResource( 3 )
 mesh = SubResource( 4 )
 material/0 = null
+
+[node name="BaldMan" parent="." instance=ExtResource( 2 )]
+transform = Transform( -0.7, 0, -2.7259e-07, 0, 0.7, 0, 2.7259e-07, 0, -0.7, 0, 0, 0 )
 
 [node name="SelectionRing" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.161, 0 )
