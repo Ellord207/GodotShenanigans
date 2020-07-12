@@ -24,6 +24,8 @@ data = PoolVector3Array( -25, 0.1, 25, 25, 0.1, 25, -25, -0.1, 25, 25, 0.1, 25, 
 
 [node name="CamControl" parent="." instance=ExtResource( 3 )]
 
+[node name="Control" parent="CamControl" instance=ExtResource( 1 )]
+
 [node name="Navigation" type="Navigation" parent="."]
 script = ExtResource( 5 )
 
@@ -46,8 +48,6 @@ transform = Transform( 3.57746e-08, 0, -3, 0, 3, 0, 3, 0, 3.57746e-08, -15.0888,
 transform = Transform( 3.57746e-08, 0, -3, 0, 3, 0, 3, 0, 3.57746e-08, 5.12317, 0, 14.2906 )
 
 [node name="Unit" parent="Navigation" instance=ExtResource( 2 )]
-
-[node name="HUD" parent="." instance=ExtResource( 1 )]
 
 [node name="SpawnPoint" parent="." instance=ExtResource( 6 )]
 

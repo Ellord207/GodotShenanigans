@@ -32,31 +32,6 @@ var currentCameraDistanceZ = 0;
 var unitNode
 
 func _input(ev):
-	if Input.is_action_just_pressed("CreateUnitKey"):
-		var m_pos: Vector2 = get_viewport().get_mouse_position();
-		var results = raycast_from_mouse(m_pos, 1);
-		if not "position" in results:
-			return;
-		var newUnitScene = load("res://Actors/Unit.tscn");
-		var newUnit = newUnitScene.instance();
-		newUnit.global_translate(results.position);
-		newUnit.team = 0;
-		navMesh.add_child(newUnit);
-		VillageManager.money -= 10;
-		
-	if Input.is_action_just_pressed("CreateBuildingKey"):
-		var m_pos: Vector2 = get_viewport().get_mouse_position();
-		var results = raycast_from_mouse(m_pos, 1);
-		if not "position" in results:
-			return;
-		var newUnitScene = load("res://Actors/Unit.tscn");
-		var newUnit = newUnitScene.instance();
-		newUnit.global_translate(results.position);
-		newUnit.team = 2;
-		navMesh.add_child(newUnit);
-		newUnit.get_target();
-		VillageManager.money -= 20;
-	
 	if ev is InputEventMouseButton:
 		if ev.button_index == BUTTON_WHEEL_UP:
 			if (cameraNode.fov > 40):
@@ -177,8 +152,10 @@ func get_unit_under_mouse(m_pos):
 		
 func get_building_under_mouse(m_pos):
 	var result = self.raycast_from_mouse(m_pos, 17) # collision mask 0...011
-	if "collider" in result and "type" in result.collider and (str(result.collider.type) == "building" or str(result.collider.type) == "EmptyPlot"):
-		return result.collider;
+	if "collider" in result:
+		if "type" in result.collider or result.collider.is_in_group("buildings"):
+			if (str(result.collider.type) == "building" or str(result.collider.type) == "EmptyPlot"):
+				return result.collider;
 
 func get_units_in_box(top_left: Vector2, bot_right: Vector2) -> Array:
 		# ensure top and bottom are not swapped

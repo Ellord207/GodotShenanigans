@@ -7,56 +7,49 @@
 [ext_resource path="res://Buildings/Jail.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Buildings/Hospital.tscn" type="PackedScene" id=6]
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
 albedo_color = Color( 0.0235294, 0.976471, 0.14902, 0.65098 )
 
-[sub_resource type="CylinderMesh" id=3]
-material = SubResource( 2 )
+[sub_resource type="CylinderMesh" id=2]
+material = SubResource( 1 )
 
-[sub_resource type="CapsuleShape" id=1]
+[sub_resource type="CapsuleShape" id=3]
 radius = 1.51336
 height = 1.84383
 
-[node name="Building" type="Spatial" groups=[
+[node name="Building" type="StaticBody" groups=[
 "buildings",
 ]]
 transform = Transform( 3.57746e-08, 0, -3, 0, 3, 0, 3, 0, 3.57746e-08, 0, 0, 0 )
+collision_layer = 16
+collision_mask = 0
 script = ExtResource( 2 )
 
-[node name="Hospital" parent="." instance=ExtResource( 6 )]
-visible = false
-collision_layer = 16
-collision_mask = 0
-
-[node name="Bank" parent="." instance=ExtResource( 3 )]
-visible = false
-collision_layer = 16
-collision_mask = 0
-
-[node name="GrassFarm" parent="." instance=ExtResource( 4 )]
-visible = false
-collision_layer = 16
-collision_mask = 0
-
-[node name="Jail" parent="." instance=ExtResource( 5 )]
-visible = false
-collision_layer = 16
-collision_mask = 0
-
 [node name="SelectionRing" type="MeshInstance" parent="."]
-transform = Transform( 3, 0, 1.42109e-14, 0, 0.01, 0, -1.42109e-14, 0, 3, -8.88178e-16, 0.225564, -0.507264 )
+transform = Transform( 3, 0, 2.13163e-14, 0, 0.01, 0, -2.13163e-14, 0, 3, -8.88178e-16, 0.225564, -0.507264 )
 visible = false
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = null
 
-[node name="House" parent="." instance=ExtResource( 1 )]
+[node name="Hospital" type="Spatial" parent="." instance=ExtResource( 6 )]
 visible = false
-collision_layer = 16
 
-[node name="BuildingCollision" type="CollisionShape" parent="House"]
-transform = Transform( 1, 0, 1.77636e-15, 0, 0.6, 0, -1.77636e-15, 0, 1, 0.129686, 0.245049, -0.541112 )
-shape = SubResource( 1 )
+[node name="Bank" type="Spatial" parent="." instance=ExtResource( 3 )]
+visible = false
 
-[node name="DoorPosition" type="Position3D" parent="House"]
-transform = Transform( 1, 0, 1.77636e-15, 0, 1, 0, -1.77636e-15, 0, 1, 3.00662, 0.187329, 0.00612323 )
+[node name="GrassFarm" type="Spatial" parent="." instance=ExtResource( 4 )]
+visible = false
+
+[node name="Jail" type="Spatial" parent="." instance=ExtResource( 5 )]
+visible = false
+
+[node name="House" type="Spatial" parent="." instance=ExtResource( 1 )]
+visible = false
+
+[node name="BuildingCollision" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 4.44089e-15, 0, 0.6, 0, -4.44089e-15, 0, 1, 0.129686, 0.245049, -0.541112 )
+shape = SubResource( 3 )
+
+[node name="DoorPosition" type="Position3D" parent="."]
+transform = Transform( 1, 0, 8.88178e-15, 0, 1, 0, -8.88178e-15, 0, 1, 2.00664, -0.763829, -0.424809 )
