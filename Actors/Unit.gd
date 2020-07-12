@@ -13,6 +13,7 @@ export (bool) var isMoneyWorker = false;
 onready var team_models = {
 	0: $BaldMan,
 	1: $InfectedModel,
+	2: $InfectedModel,
 }
 var hp: int = hp_max;
 var fireball_scene = preload("res://Actors/Fireball.tscn");
@@ -34,6 +35,7 @@ onready var nav: Navigation = get_parent()
 onready var model = $BaldMan;
 
 signal unit_death(unit);
+signal unit_team_changed(unit);
 
 func _ready():
 	#init timer
@@ -43,23 +45,12 @@ func _ready():
 	cooldown_timer.connect("timeout", self, "_on_timeout_complete");
 	add_child(cooldown_timer);
 	
-	if team in team_models:
-		team_models[0].visible = false;
-		team_models[team].visible = true;
-	var cylinder: CylinderShape = $AttackRange/CollisionShape.shape;
-	cylinder.radius = attack_range;
-	if team == 0:
-		self.set_collision_layer_bit(3, true);
-		$AttackRange.set_collision_mask_bit(4, true);
-	else:
-		self.set_collision_layer_bit(4, true);
-		$AttackRange.set_collision_mask_bit(3, true);
-		$AttackRange.set_collision_mask_bit(1, true);
+	set_team(team);
 
-func get_target():
+func get_target() -> Spatial:
 	var buildings = get_tree().get_nodes_in_group("buildings");
 	if buildings.size() <= 0:
-		return;
+		return null;
 	var building = buildings[0];
 	var dist: int = 10000; # something larget to easily
 	for b in buildings:
@@ -68,6 +59,7 @@ func get_target():
 			dist = temp;
 			building = b;
 	move_to(building.get_door_position());
+	return building;
 
 func move_to(target_pos):
 	var origin = global_transform.origin;
@@ -116,9 +108,51 @@ func adjust_hp(num: int) -> int:
 		kill();
 	return hp;
 
+func is_infected() -> bool:
+	return not team == 0;
+
+func set_infection(is_infected: bool) -> void:
+	if team == 0:
+		emit_signal("unit_team_changed", self);
+		set_team(1);
+
+func set_team(team_arg: int):
+	team = team_arg;
+	if team in team_models:
+		team_models[0].visible = false;
+		team_models[team].visible = true;
+	var cylinder: CylinderShape = $AttackRange/CollisionShape.shape;
+	cylinder.radius = attack_range;
+	# layer 2 generic unit
+	# layer 3 villager
+	# layer 4 infected
+	# layer 5 building
+	if team == 0: # villager
+		self.set_collision_layer_bit(3, true); # attacked by infected
+		self.set_collision_layer_bit(4, false); # attacked by villagers
+		$AttackRange.set_collision_mask_bit(3, false); # attacks villagers
+		$AttackRange.set_collision_mask_bit(4, true); # attacks infected
+		$AttackRange.set_collision_mask_bit(5, false); # attacks building
+	elif team == 1: # infected villager
+		self.set_collision_layer_bit(3, true); # attacked by infected
+		self.set_collision_layer_bit(4, false); # attacked by villagers
+		$AttackRange.set_collision_mask_bit(3, true); # attacks villagers
+		$AttackRange.set_collision_mask_bit(4, true); # attacks infected
+		$AttackRange.set_collision_mask_bit(5, true); # attacks building
+	elif team == 2: # infected
+		self.set_collision_layer_bit(3, false); # attacked by infected
+		self.set_collision_layer_bit(4, true); # attacked by villagers
+		$AttackRange.set_collision_mask_bit(3, true); # attacks villagers
+		$AttackRange.set_collision_mask_bit(4, false); # attacks infected
+		$AttackRange.set_collision_mask_bit(5, true); # attacks building
+
 func kill() -> void:
 	emit_signal("unit_death", self);
 	self.queue_free();
+
+func rng_virius() -> void:
+	if randi() % 100 > 90:
+		set_infection(true);
 
 func attack_target() -> void:
 	if target:
@@ -126,6 +160,8 @@ func attack_target() -> void:
 		attack_ready = false;
 		cooldown_timer.start();
 		look_at(target.transform.origin, Vector3.UP);
+		if is_infected():
+			target.rng_virius();
 		if target.adjust_hp(-1 * attack_str) <= 0:
 			drop_target(target);
 
@@ -137,12 +173,23 @@ func spawn_fireball():
 
 
 func drop_target(body: Unit) -> void:
+	if body:
+		body.disconnect("unit_team_changed", self, "_filter_targets_in_range");
+		body.disconnect("unit_death", self, "drop_target");
 	targets_in_range.erase(body);
-	if target && body.get_instance_id() == target.get_instance_id():
+	if body == target:
 		if targets_in_range.size() > 0:
 			target = get_next_target();
 		else:
 			target = null;
+
+func add_target(body: Unit) -> void:
+	targets_in_range.append(body);
+	body.connect("unit_team_changed", self, "_filter_targets_in_range");
+	body.connect("unit_death", self, "drop_target");
+	if target == null:
+		target = body;
+		look_at(target.transform.origin, Vector3.UP);
 
 func is_selected() -> bool:
 	return $SelectionRing.visible;
@@ -156,7 +203,17 @@ func get_next_target() -> Unit:
 			dist = temp;
 			next = unit;
 	return next;
-	#return targets_in_range[0];
+	
+func _filter_targets_in_range(turnCoat: Unit):
+	if team == 0:
+		if turnCoat.team == 0 or turnCoat.team == 1:
+			drop_target(turnCoat);
+	if team == 1: # infected villager
+		if turnCoat.team == 1:
+			drop_target(turnCoat);
+	if team == 2: # infected
+		if turnCoat.team == 2:
+			drop_target(turnCoat);
 
 func _on_timeout_complete() -> void:
 	self.attack_ready = true;
@@ -165,10 +222,7 @@ func _on_AttackRange_body_entered(body: Node) -> void:
 	if not "team" in body or body.team == self.team:
 		if team == 0  or "type" in body:
 			return;
-	targets_in_range.append(body);
-	if target == null:
-		target = body;
-		look_at(target.transform.origin, Vector3.UP);
+	add_target(body);
 
 func _on_AttackRange_body_exited(body: Node) -> void:
 	if not "team" in body or body.team == self.team:

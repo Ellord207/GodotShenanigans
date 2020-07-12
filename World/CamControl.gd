@@ -49,10 +49,12 @@ func _input(ev):
 		var results = raycast_from_mouse(m_pos, 1);
 		if not "position" in results:
 			return;
-		var newBuildingScene = load("res://UI/House.tscn");
-		var newBuilding = newBuildingScene.instance();
-		newBuilding.global_translate(results.position);
-		navMesh.add_child(newBuilding);
+		var newUnitScene = load("res://Actors/Unit.tscn");
+		var newUnit = newUnitScene.instance();
+		newUnit.global_translate(results.position);
+		newUnit.team = 1;
+		navMesh.add_child(newUnit);
+		newUnit.get_target();
 		VillageManager.money -= 20;
 	
 	if ev is InputEventMouseButton:
