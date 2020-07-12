@@ -33,6 +33,7 @@ config/icon="res://icon.png"
 [autoload]
 
 VillageData="*res://VillageData.gd"
+VillageManager="*res://VillageManager.gd"
 
 [input]
 

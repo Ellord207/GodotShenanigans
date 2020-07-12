@@ -15,12 +15,14 @@ var team_colors = {
 	1: preload("res://Actors/Team_One_Material.tres"),
 }
 var hp: int = hp_max;
+var fireball_scene = preload("res://Actors/Fireball.tscn");
 
 var path = [];
 var path_ind := 0;
 
 var targets_in_range: Array = [];
 var target: Unit = null;
+var target_building: Spatial = null;
 
 var cooldown_timer: Timer = null;
 var attack_ready := true;
@@ -71,6 +73,14 @@ func move_to(target_pos):
 	path = nav.get_simple_path(origin, target_pos);
 	path_ind = 0;
 	model.animation_run();
+
+func move_to_building(building: Spatial):
+	var origin = global_transform.origin;
+	path = nav.get_simple_path(origin, building.get_door_position());
+	path_ind = 0;
+	model.animation_run();
+	if "type" in building and building.type == "building":
+		target_building = building;
 	
 func _physics_process(delta: float) -> void:
 	if attack_ready and target:
@@ -89,6 +99,10 @@ func _physics_process(delta: float) -> void:
 			else:
 				if transform.origin + move_vec != Vector3.UP:
 					look_at(target.transform.origin, Vector3.UP);
+			if target_building and self.global_transform.origin.distance_to(target_building.get_door_position()) < 1:
+				target_building = null;
+				## unit enter building here
+				pass;
 			move_and_slide(move_vec * move_speed, Vector3.UP);
 	
 func select() -> void:
@@ -109,11 +123,19 @@ func kill() -> void:
 
 func attack_target() -> void:
 	if target:
+		spawn_fireball();
 		attack_ready = false;
 		cooldown_timer.start();
 		look_at(target.transform.origin, Vector3.UP);
 		if target.adjust_hp(-1 * attack_str) <= 0:
 			drop_target(target);
+
+func spawn_fireball():
+	var newFireball = fireball_scene.instance();
+	newFireball.target = target;
+	nav.add_child(newFireball);
+	#newFireball.global_translate(self.global_transform.origin);
+
 
 func drop_target(body: Unit) -> void:
 	targets_in_range.erase(body);

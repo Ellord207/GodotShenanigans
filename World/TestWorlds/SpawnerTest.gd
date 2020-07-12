@@ -9,5 +9,5 @@ func _on_Button_pressed() -> void:
 	var points = get_tree().get_nodes_in_group("infected_spawn");
 	if points.size() == 0:
 		return;
-	var point = points[0];
+	var point = points[randi() % points.size() - 1];
 	point.queue_spawn(self);
