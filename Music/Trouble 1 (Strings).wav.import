@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Trouble 1 (Strings).wav-3d13d64b5eee1f07aeda9b94718d3a6c.sample"
+
+[deps]
+
+source_file="res://Music/Trouble 1 (Strings).wav"
+dest_files=[ "res://.import/Trouble 1 (Strings).wav-3d13d64b5eee1f07aeda9b94718d3a6c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0
