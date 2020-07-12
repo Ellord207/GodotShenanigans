@@ -6,6 +6,7 @@ var building = preload("building.gd") # Relative path
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$BuildingOrigin/Building.allBuildingVisibility(false)
 	pass # Replace with function body.
 
 func select() -> void:
@@ -21,7 +22,12 @@ func deselect() -> void:
 		$SelectionRing.hide()
 
 func purchaseBuilding(type):
-	var newBuilding = building.new("Farm")
+	$BuildingOrigin/Building.setBuildingType(type)
+	$Wall1.visible = false
+	$Wall2.visible = false
+	$Wall3.visible = false
+	$Wall4.visible = false
+	
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

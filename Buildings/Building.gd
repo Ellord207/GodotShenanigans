@@ -35,24 +35,28 @@ func _ready():
 		maxWorkers = 6
 		workMultiplier = 5
 		buildingPrice = 200
+		$GrassFarm.visible = true
 	elif buildingType == "Bank":
 		requiredWork = 1000
 		output = 100
 		maxWorkers = 4
 		workMultiplier = 6
 		buildingPrice = 300
+		$Bank.visible = true
 	elif buildingType == "Jail":
 		requiredWork = 1000
 		output = 1
 		maxWorkers = 8
 		workMultiplier = 5
 		buildingPrice = 400
+		$Jail.visible = true
 	elif buildingType == "Hospital":
 		requiredWork = 500
 		output = 1
 		maxWorkers = 4
 		workMultiplier = 4
 		buildingPrice = 500
+		$Hospital.visible = true
 	
 	pass # Replace with function body.
 
@@ -61,7 +65,7 @@ func get_door_position() -> Vector3:
 	if door_position: 
 		vec = door_position.global_transform.origin;
 	else:
-		vec = $StaticBody/DoorPosition.global_transform.origin;
+		vec = $House/DoorPosition.global_transform.origin;
 	return vec;
 
 # returns true if output is generated
@@ -84,15 +88,44 @@ func kill() -> void:
 	
 func select() -> void:
 	if $SelectionRing == null:
-		$StaticBody/SelectionRing.show()
+		$House/SelectionRing.show()
 	else:
 		$SelectionRing.show()
 	
 func deselect() -> void:
 	if $SelectionRing == null:
-		$StaticBody/SelectionRing.hide()
+		$House/SelectionRing.hide()
 	else:
 		$SelectionRing.hide()
+
+func allBuildingVisibility(flag):
+	$GrassFarm.visible = flag
+	$Hospital.visible = flag
+	$Bank.visible = flag
+	$Jail.visible = flag
+
+func setBuildingType(type):
+	buildingType = type
+	if type == "Farm":
+		$GrassFarm.visible = true
+		$Hospital.visible = false
+		$Bank.visible = false
+		$Jail.visible = false
+	elif type == "Hospital":
+		$GrassFarm.visible = false
+		$Hospital.visible = true
+		$Bank.visible = false
+		$Jail.visible = false
+	elif type == "Bank":
+		$GrassFarm.visible = false
+		$Hospital.visible = false
+		$Bank.visible = true
+		$Jail.visible = false
+	elif type == "Jail":
+		$GrassFarm.visible = false
+		$Hospital.visible = false
+		$Bank.visible = false
+		$Jail.visible = true
 
 func enterBuilding(villager):
 	currentWorkers += 1
