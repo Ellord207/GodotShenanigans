@@ -30,6 +30,17 @@ config/name="GMTK Game Jam 2020-Out Of Control"
 run/main_scene="res://World/TestWorld.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+<<<<<<< Updated upstream
+=======
+
+VillageData="*res://VillageData.gd"
+
+[display]
+>>>>>>> Stashed changes
+
+VillageData="*res://VillageData.gd"
+
 [input]
 
 main_command={
@@ -42,6 +53,28 @@ alt_command={
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
+CreateUnitKey={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"unicode":0,"echo":false,"script":null)
+ ]
+}
+CreateBuildingKey={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":66,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[layer_names]
+
+3d_physics/layer_1="terrian"
+3d_physics/layer_2="units"
+3d_physics/layer_3="villagers"
+3d_physics/layer_4="infected"
+3d_physics/layer_5="buildings"
+
+[layer_names]
+
+3d_physics/layer_4="buildings"
 
 [rendering]
 
