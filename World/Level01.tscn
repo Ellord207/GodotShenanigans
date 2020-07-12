@@ -24,7 +24,14 @@ data = PoolVector3Array( -250, 1, 250, 250, 1, 250, -250, -1, 250, 250, 1, 250, 
 
 [node name="Spatial" type="Spatial"]
 
+[node name="CamControl" parent="." instance=ExtResource( 2 )]
+
+[node name="Control" parent="CamControl" instance=ExtResource( 4 )]
+
 [node name="Navigation" type="Navigation" parent="."]
+
+[node name="Unit" parent="Navigation" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4028, 1.024, 0 )
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Navigation"]
 navmesh = SubResource( 1 )
@@ -40,13 +47,6 @@ shape = SubResource( 4 )
 
 [node name="Hosue" parent="Navigation/NavigationMeshInstance" instance=ExtResource( 1 )]
 transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 1.43821, 0 )
-
-[node name="Unit" parent="Navigation" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4028, 1.024, 0 )
-
-[node name="CamControl" parent="." instance=ExtResource( 2 )]
-
-[node name="Control" parent="CamControl" instance=ExtResource( 4 )]
 [connection signal="buildingSelected" from="CamControl" to="CamControl/Control" method="_on_CamControl_buildingSelected"]
 [connection signal="deselected" from="CamControl" to="CamControl/Control" method="_on_CamControl_deselected"]
 [connection signal="unitSelected" from="CamControl" to="CamControl/Control" method="_on_CamControl_unitSelected"]

@@ -2,7 +2,8 @@ extends Node
 
 class_name PlayerHUD
 
-var statsGrid: Node
+var statsGrid : Node
+var commandsGrid : Node
 var selectedLabel : Node
 var selectedIcon : Node
 
@@ -19,6 +20,7 @@ var buildingTexture
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	statsGrid = $HBoxContainer/VBoxStats/MarginStatsInfo/ScrollContainerInfo/GridStatsInfo
+	commandsGrid = $HBoxContainer/VBoxCommands/MarginCommands/GridCommands
 	selectedLabel = $HBoxContainer/VBoxSelectedItem/LabelSelectedItem
 	selectedIcon = $HBoxContainer/VBoxSelectedItem/MarginContainer/TextureRect
 	timeLabel = $VBoxContainer/TimeLabel
@@ -51,11 +53,12 @@ func updateVillageResources(village):
 func _on_CamControl_unitSelected(objects):
 	
 	var tree = get_tree()
-	#var statsGrid = get_node("/root/TestWorld/Control/HBoxContainer/VBoxStats/MarginStatsInfo/GridStatsInfo")
 	
 	# clear current labels
 	for child in statsGrid.get_children():
 		statsGrid.remove_child(child)
+	for child in commandsGrid.get_children():
+		commandsGrid.remove_child(child)
 	
 	# get all relevant properties
 	var type = objects[0].get_class()
@@ -82,14 +85,23 @@ func _on_CamControl_deselected():
 	for child in statsGrid.get_children():
 		statsGrid.remove_child(child)
 		
+	for child in commandsGrid.get_children():
+		commandsGrid.remove_child(child)
+		
 	selectedLabel.text = ""
 	(selectedIcon as TextureRect).texture = null
 
 
 func _on_CamControl_buildingSelected(objects):
+	# subscribe to building ui event
+	objects[0].connect("updateUI", self, "updateUI")
+	
 	# clear current labels
 	for child in statsGrid.get_children():
 		statsGrid.remove_child(child)
+		
+	for child in commandsGrid.get_children():
+		commandsGrid.remove_child(child)
 		
 	# get all relevant properties
 	selectedIcon.texture = buildingTexture
@@ -104,3 +116,11 @@ func _on_CamControl_buildingSelected(objects):
 		label = Label.new()
 		(label as Label).text = "Workers: " + str(object.currentWorkers) + " / " + str(object.maxWorkers)
 		(statsGrid as GridContainer).add_child(label)
+		for worker in object.workers:
+			var button = Button.new()
+			(button as Button).text = worker.name
+			commandsGrid.add_child(button)
+
+func updateUI(object):
+	print("Update UI signal called");
+	pass

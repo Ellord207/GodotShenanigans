@@ -17,6 +17,7 @@ var team_colors = {
 var hp: int = hp_max;
 var fireball_scene = preload("res://Actors/Fireball.tscn");
 
+var type = "unit"
 var path = [];
 var path_ind := 0;
 
@@ -100,6 +101,7 @@ func _physics_process(delta: float) -> void:
 				if transform.origin + move_vec != Vector3.UP:
 					look_at(target.transform.origin, Vector3.UP);
 			if target_building and self.global_transform.origin.distance_to(target_building.get_door_position()) < 1:
+				target_building.enterBuilding(self)
 				target_building = null;
 				## unit enter building here
 				pass;

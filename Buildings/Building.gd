@@ -4,7 +4,7 @@ export (int) var hpMax = 1000
 export (String) var type = "building"
 export (String) var buildingType = "Farm" #enum buildingTypes {Farm, Hospital, Jail, Bank}
 
-onready var position = $DoorPosition;
+onready var door_position = $DoorPosition;
 
 var hp: int = hpMax
 var maxWorkers = 0
@@ -13,11 +13,18 @@ var workDone = 0
 var requiredWork = 0
 var output = 0
 var workMultiplier = 0
+var workers = []
+
+var unitNode
 
 signal building_destroyed(building)
+signal updateUI(building)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#yield(get_tree().create_timer(0.1),"timeout")
+	unitNode = get_node("/root/Spatial/Navigation/Unit")
+	
 	if buildingType == "Farm":
 		requiredWork = 1000
 		output = 1000
@@ -42,7 +49,7 @@ func _ready():
 	pass # Replace with function body.
 
 func get_door_position() -> Vector3:
-	return position.global_transform.origin;
+	return door_position.global_transform.origin;
 
 # returns true if output is generated
 func doWork() -> bool:
@@ -67,9 +74,28 @@ func select() -> void:
 		$StaticBody/SelectionRing.show()
 	else:
 		$SelectionRing.show()
+		
+	#addWorker(unitNode)
 	
 func deselect() -> void:
 	if $SelectionRing == null:
 		$StaticBody/SelectionRing.hide()
 	else:
 		$SelectionRing.hide()
+		
+	#removeWorker()
+
+func enterBuilding(villager):
+	currentWorkers += 1
+	workers.append(villager)
+	villager.set_physics_process(false)
+	villager.visible = false
+	villager.translate(Vector3(0, 200, 0));
+	emit_signal("updateUI", self)
+	
+func leaveBuilding():
+	currentWorkers -= 1
+	var villager = workers.pop_back()
+	villager.translate(Vector3(0, -200, 0));
+	villager.set_physics_process(true)
+	villager.visible = true

@@ -28,6 +28,8 @@ var start_sel_pos = Vector2();
 var currentCameraDistanceX = 0;
 var currentCameraDistanceZ = 0;
 
+var unitNode
+
 func _input(ev):
 	if Input.is_action_just_pressed("CreateUnitKey"):
 		var m_pos: Vector2 = get_viewport().get_mouse_position();
