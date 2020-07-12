@@ -104,8 +104,7 @@ func move_selected_units(m_pos: Vector2):
 	if result:
 		for unit in selected_units:
 			if "type" in result.collider and str(result.collider.type) == "building":
-				#unit.enter_building
-				pass;
+				unit.move_to_building(result.collider);
 			else:
 				unit.move_to(result.position);
 

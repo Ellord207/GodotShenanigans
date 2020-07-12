@@ -33,3 +33,6 @@ transform = Transform( 3, 0, 0, 0, 0.01, 0, 0, 0, 3, 0, 0.225564, -0.507264 )
 visible = false
 mesh = SubResource( 3 )
 material/0 = null
+
+[node name="DoorPosition" type="Position3D" parent="StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.76286, 0.187329, 0.00612323 )

@@ -4,6 +4,8 @@ export (int) var hpMax = 1000
 export (String) var type = "building"
 export (String) var buildingType = "Farm" #enum buildingTypes {Farm, Hospital, Jail, Bank}
 
+onready var position = $DoorPosition;
+
 var hp: int = hpMax
 var maxWorkers = 0
 var currentWorkers = 0
@@ -39,10 +41,8 @@ func _ready():
 	
 	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func get_door_position() -> Vector3:
+	return position.global_transform.origin;
 
 # returns true if output is generated
 func doWork() -> bool:

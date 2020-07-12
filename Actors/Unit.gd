@@ -22,6 +22,7 @@ var path_ind := 0;
 
 var targets_in_range: Array = [];
 var target: Unit = null;
+var target_building: Spatial = null;
 
 var cooldown_timer: Timer = null;
 var attack_ready := true;
@@ -72,6 +73,14 @@ func move_to(target_pos):
 	path = nav.get_simple_path(origin, target_pos);
 	path_ind = 0;
 	model.animation_run();
+
+func move_to_building(building: Spatial):
+	var origin = global_transform.origin;
+	path = nav.get_simple_path(origin, building.get_door_position());
+	path_ind = 0;
+	model.animation_run();
+	if "type" in building and building.type == "building":
+		target_building = building;
 	
 func _physics_process(delta: float) -> void:
 	if attack_ready and target:
@@ -90,6 +99,10 @@ func _physics_process(delta: float) -> void:
 			else:
 				if transform.origin + move_vec != Vector3.UP:
 					look_at(target.transform.origin, Vector3.UP);
+			if target_building and self.global_transform.origin.distance_to(target_building.get_door_position()) < 1:
+				target_building = null;
+				## unit enter building here
+				pass;
 			move_and_slide(move_vec * move_speed, Vector3.UP);
 	
 func select() -> void:
