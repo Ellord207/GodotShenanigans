@@ -100,10 +100,14 @@ func calc_move(m_pos, delta) -> void:
 	global_translate(move_vec * delta * CAMERA_SPEED);
 
 func move_selected_units(m_pos: Vector2):
-	var results = raycast_from_mouse(m_pos, 1);
-	if results:
+	var result = raycast_from_mouse(m_pos, 17); # terrain and buildings
+	if result:
 		for unit in selected_units:
-			unit.move_to(results.position);
+			if "type" in result.collider and str(result.collider.type) == "building":
+				#unit.enter_building
+				pass;
+			else:
+				unit.move_to(result.position);
 
 func select_units(m_pos) -> void:
 	var new_selected_units = []
@@ -159,7 +163,7 @@ func get_unit_under_mouse(m_pos):
 		
 func get_building_under_mouse(m_pos):
 	var result = self.raycast_from_mouse(m_pos, 17) # collision mask 0...011
-	if "type" in result.collider and str(result.collider.type) == "building":
+	if "collider" in result and "type" in result.collider and str(result.collider.type) == "building":
 		 return result.collider;
 
 func get_units_in_box(top_left: Vector2, bot_right: Vector2) -> Array:
