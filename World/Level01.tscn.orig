@@ -5,6 +5,7 @@
 [ext_resource path="res://Actors/Unit.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI/PlayerHUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Buildings/EmptyPlot.tscn" type="PackedScene" id=5]
+[ext_resource path="res://World/SpawnPoint.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Music/Trouble 1 (Strings).wav" type="AudioStream" id=6]
 [ext_resource path="res://World/AudioStreamPlayer.gd" type="Script" id=7]
 [ext_resource path="res://World/SpawnPoint.tscn" type="PackedScene" id=8]
@@ -44,7 +45,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6121, 1.024, 0 )
 navmesh = SubResource( 1 )
 
 [node name="Ground" type="MeshInstance" parent="Navigation/NavigationMeshInstance"]
+<<<<<<< HEAD
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.254211, 2.28882e-05, 0.201508 )
+=======
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.33812, -0.519821, 0.414009 )
+>>>>>>> finalgamebranch
 mesh = SubResource( 3 )
 material/0 = null
 
@@ -54,7 +59,6 @@ material/0 = null
 shape = SubResource( 4 )
 
 [node name="Building" parent="Navigation/NavigationMeshInstance" instance=ExtResource( 1 )]
-transform = Transform( 3.57746e-08, 0, -3, 0, 3, 0, 3, 0, 3.57746e-08, 3.43656e-07, 1.18376, 28.8185 )
 
 [node name="EmptyPlot" parent="Navigation/NavigationMeshInstance" instance=ExtResource( 5 )]
 transform = Transform( 7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 7.56256, 1.34957, -92.0401 )
@@ -167,6 +171,68 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.068, 0, 93.819 )
 [node name="SpawnPoint17" parent="Navigation" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.976, 0, 89.53 )
 
+[node name="SpawnPoint" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -145.183, 0, -142.723 )
+
+[node name="SpawnPoint2" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -172.9, 0, -88.3021 )
+
+[node name="SpawnPoint3" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -191.061, 0, -20.7666 )
+
+[node name="SpawnPoint4" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -169.797, 0, 38.7807 )
+
+[node name="SpawnPoint5" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -131.79, 0, 78.621 )
+
+[node name="SpawnPoint6" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -85.5292, 0, 110.675 )
+
+[node name="SpawnPoint7" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -42.0682, 0, 124.308 )
+
+[node name="SpawnPoint8" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.95184, 0, 131.963 )
+
+[node name="SpawnPoint9" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 46.7823, 0, 120.318 )
+
+[node name="SpawnPoint10" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 83.8262, 0, 93.4669 )
+
+[node name="SpawnPoint11" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 122.739, 0, 45.649 )
+
+[node name="SpawnPoint12" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 145.459, 0, 5.3105 )
+
+[node name="SpawnPoint13" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 153.294, 0, -35.8176 )
+
+[node name="SpawnPoint14" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 155.784, 0, -71.1734 )
+
+[node name="SpawnPoint15" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 150.267, 0, -119.827 )
+
+[node name="SpawnPoint16" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 139.561, 0, -140.281 )
+
+[node name="SpawnPoint17" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 115.276, 0, -164.451 )
+
+[node name="SpawnPoint18" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 65.4935, 0, -172.156 )
+
+[node name="SpawnPoint19" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28.053, 0, -179.291 )
+
+[node name="SpawnPoint20" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -37.454, 0, -182.544 )
+
+[node name="SpawnPoint21" parent="Navigation" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -103.632, 1.52588e-05, -179.337 )
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 script = ExtResource( 7 )
