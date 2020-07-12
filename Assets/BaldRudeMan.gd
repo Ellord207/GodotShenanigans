@@ -8,10 +8,8 @@ func _start():
 		limbAnim.play(animation);
 
 func _stop():
-	var limbAnim;
 	for animation in baldManLimbAnimations.keys():
-		limbAnim=baldManLimbAnimations.get(animation);
-		limbAnim.play_backwards(animation);
+		baldManLimbAnimations.get(animation).stop();
 
 func _ready():
 	for cube in self.get_children():
