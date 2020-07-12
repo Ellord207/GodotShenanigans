@@ -113,8 +113,8 @@ func is_infected() -> bool:
 
 func set_infection(is_infected: bool) -> void:
 	if team == 0:
-		emit_signal("unit_team_changed", self);
 		set_team(1);
+		emit_signal("unit_team_changed", self);
 
 func set_team(team_arg: int):
 	team = team_arg;
@@ -141,6 +141,7 @@ func set_team(team_arg: int):
 		$AttackRange.set_collision_mask_bit(3, true); # attacks villagers
 		$AttackRange.set_collision_mask_bit(4, true); # attacks infected
 		$AttackRange.set_collision_mask_bit(5, true); # attacks building
+		get_target();
 	elif team == 2: # infected
 		scale = Vector3(1.5, 1.5, 1.5);
 		self.set_collision_layer_bit(3, false); # attacked by infected
@@ -148,6 +149,7 @@ func set_team(team_arg: int):
 		$AttackRange.set_collision_mask_bit(3, true); # attacks villagers
 		$AttackRange.set_collision_mask_bit(4, false); # attacks infected
 		$AttackRange.set_collision_mask_bit(5, true); # attacks building
+		get_target();
 
 func kill() -> void:
 	emit_signal("unit_death", self);
