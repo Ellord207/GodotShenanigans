@@ -15,6 +15,7 @@ var team_colors = {
 	1: preload("res://Actors/Team_One_Material.tres"),
 }
 var hp: int = hp_max;
+var fireball_scene = preload("res://Actors/Fireball.tscn");
 
 var path = [];
 var path_ind := 0;
@@ -109,11 +110,19 @@ func kill() -> void:
 
 func attack_target() -> void:
 	if target:
+		spawn_fireball();
 		attack_ready = false;
 		cooldown_timer.start();
 		look_at(target.transform.origin, Vector3.UP);
 		if target.adjust_hp(-1 * attack_str) <= 0:
 			drop_target(target);
+
+func spawn_fireball():
+	var newFireball = fireball_scene.instance();
+	newFireball.target = target;
+	nav.add_child(newFireball);
+	#newFireball.global_translate(self.global_transform.origin);
+
 
 func drop_target(body: Unit) -> void:
 	targets_in_range.erase(body);
