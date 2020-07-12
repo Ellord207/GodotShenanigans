@@ -49,7 +49,12 @@ func _ready():
 	pass # Replace with function body.
 
 func get_door_position() -> Vector3:
-	return door_position.global_transform.origin;
+	var vec: Vector3
+	if door_position: 
+		vec = door_position.global_transform.origin;
+	else:
+		vec = $StaticBody/DoorPosition.global_transform.origin;
+	return vec;
 
 # returns true if output is generated
 func doWork() -> bool:

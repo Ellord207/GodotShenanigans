@@ -23,7 +23,7 @@ var path_ind := 0;
 
 var targets_in_range: Array = [];
 var target: Unit = null;
-var target_building: Spatial = null;
+var worker_building: Spatial = null;
 
 var cooldown_timer: Timer = null;
 var attack_ready := true;
@@ -55,7 +55,6 @@ func _ready():
 		self.set_collision_layer_bit(4, true);
 		$AttackRange.set_collision_mask_bit(3, true);
 		$AttackRange.set_collision_mask_bit(1, true);
-		get_target();
 
 func get_target():
 	var buildings = get_tree().get_nodes_in_group("buildings");
@@ -64,11 +63,11 @@ func get_target():
 	var building = buildings[0];
 	var dist: int = 10000; # something larget to easily
 	for b in buildings:
-		var temp = self.transform.origin.distance_to(b.transform.origin);
+		var temp = self.global_transform.origin.distance_to(b.global_transform.origin);
 		if temp < dist:
 			dist = temp;
 			building = b;
-	move_to(building.transform.origin);
+	move_to(building.get_door_position());
 
 func move_to(target_pos):
 	var origin = global_transform.origin;
@@ -77,12 +76,9 @@ func move_to(target_pos):
 	model.animation_run();
 
 func move_to_building(building: Spatial):
-	var origin = global_transform.origin;
-	path = nav.get_simple_path(origin, building.get_door_position());
-	path_ind = 0;
-	model.animation_run();
+	move_to(building.get_door_position());
 	if "type" in building and building.type == "building":
-		target_building = building;
+		worker_building = building;
 	
 func _physics_process(delta: float) -> void:
 	if attack_ready and target:
@@ -101,9 +97,9 @@ func _physics_process(delta: float) -> void:
 			else:
 				if transform.origin + move_vec != Vector3.UP:
 					look_at(target.transform.origin, Vector3.UP);
-			if target_building and self.global_transform.origin.distance_to(target_building.get_door_position()) < 1:
-				target_building.enterBuilding(self)
-				target_building = null;
+			if worker_building and self.global_transform.origin.distance_to(worker_building.get_door_position()) < 1:
+				worker_building.enterBuilding(self)
+				worker_building = null;
 				## unit enter building here
 				pass;
 			move_and_slide(move_vec * move_speed, Vector3.UP);
@@ -153,7 +149,7 @@ func is_selected() -> bool:
 
 func get_next_target() -> Unit:
 	var next: Unit = targets_in_range[0];
-	var dist: int = 10000; # something larget to easily
+	var dist: int = 10000; # something large
 	for unit in targets_in_range:
 		var temp = self.transform.origin.distance_to(unit.transform.origin);
 		if temp < dist:
@@ -167,9 +163,8 @@ func _on_timeout_complete() -> void:
 
 func _on_AttackRange_body_entered(body: Node) -> void:
 	if not "team" in body or body.team == self.team:
-		if not team == 0:
-			pass; # target build
-		return;
+		if team == 0  or "type" in body:
+			return;
 	targets_in_range.append(body);
 	if target == null:
 		target = body;
