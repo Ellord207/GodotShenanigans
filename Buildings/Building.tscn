@@ -3,7 +3,9 @@
 [ext_resource path="res://Assets/House.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Buildings/Building.gd" type="Script" id=2]
 
-[sub_resource type="SphereShape" id=1]
+[sub_resource type="CapsuleShape" id=4]
+radius = 1.51336
+height = 1.84383
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_transparent = true
@@ -15,7 +17,7 @@ material = SubResource( 2 )
 [node name="Spatial" type="Spatial" groups=[
 "buildings",
 ]]
-transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0 )
+transform = Transform( 3.57746e-08, 0, -3, 0, 3, 0, 3, 0, 3.57746e-08, 0, 0, 0 )
 script = ExtResource( 2 )
 
 [node name="StaticBody" parent="." instance=ExtResource( 1 )]
@@ -24,7 +26,7 @@ script = ExtResource( 2 )
 
 [node name="BuildingCollision" type="CollisionShape" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, 0.6, 0, 0, 0, 1, 0.129686, 0.245049, -0.541112 )
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="SelectionRing" type="MeshInstance" parent="StaticBody"]
 transform = Transform( 3, 0, 0, 0, 0.01, 0, 0, 0, 3, 0, 0.225564, -0.507264 )
