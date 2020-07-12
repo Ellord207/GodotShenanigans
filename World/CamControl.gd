@@ -2,7 +2,7 @@ extends Spatial
 
 const MOVE_MARGIN = 20;
 const CAMERA_SPEED = 100;
-export var max_cam_dist = 60;
+export var max_cam_dist = 300;
 export var zoom_fov_increment = 5;
 var MAX_CAMERA_RIGHT_DISTANCE_X = max_cam_dist;
 var MAX_CAMERA_LEFT_DISTANCE_X = -1 * max_cam_dist;
@@ -39,6 +39,31 @@ func _input(ev):
 		if ev.button_index == BUTTON_WHEEL_DOWN:
 			if (cameraNode.fov < 80):
 				cameraNode.fov += zoom_fov_increment;
+				
+	if Input.is_action_just_pressed("CreateUnitKey"):
+		var m_pos: Vector2 = get_viewport().get_mouse_position();
+		var results = raycast_from_mouse(m_pos, 1);
+		if not "position" in results:
+			return;
+		var newUnitScene = load("res://Actors/Unit.tscn");
+		var newUnit = newUnitScene.instance();
+		newUnit.global_translate(results.position);
+		newUnit.team = 0;
+		navMesh.add_child(newUnit);
+		VillageManager.money -= 10;
+
+	if Input.is_action_just_pressed("CreateBuildingKey"):
+		var m_pos: Vector2 = get_viewport().get_mouse_position();
+		var results = raycast_from_mouse(m_pos, 1);
+		if not "position" in results:
+			return;
+		var newUnitScene = load("res://Actors/Unit.tscn");
+		var newUnit = newUnitScene.instance();
+		newUnit.global_translate(results.position);
+		newUnit.team = 2;
+		navMesh.add_child(newUnit);
+		newUnit.get_target();
+		VillageManager.money -= 20;
 
 func _process(delta: float) -> void:
 	var m_pos: Vector2 = get_viewport().get_mouse_position();

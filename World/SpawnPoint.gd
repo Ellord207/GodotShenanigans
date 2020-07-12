@@ -14,7 +14,7 @@ func spawn():
 		return;
 	var newUnitScene = load("res://Actors/Unit.tscn");
 	var newUnit = newUnitScene.instance();
-	newUnit.team = 1;
+	newUnit.team = 2;
 	queued_spawn_navs.pop_front().add_child(newUnit);
 	newUnit.global_translate(self.global_transform.origin);
 	newUnit.get_target();
