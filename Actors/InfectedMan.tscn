@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/InfectedMan.escn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/InfectedMan.gd" type="Script" id=2]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.914734, -0.0754077, 0.396957, 0, 0.982431, 0.186627, -0.404056, -0.170714, 0.898663, 6.72121, 4.19401, 11.2269 )
+fov = 38.1939
+
+[node name="InfectedMan" parent="." instance=ExtResource( 1 )]
+script = ExtResource( 2 )
